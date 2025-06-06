@@ -170,6 +170,8 @@ body {
     position: relative;
     overflow: hidden;
     cursor: pointer;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
 }
 
 .stat-card::before {
@@ -247,14 +249,14 @@ body {
 
 /* Interactive Chart Area */
 .chart-section {
-    background: rgba(255, 255, 255, 0.03);
     backdrop-filter: blur(20px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: #ffffff08;
+    border: 1px solid #ffffff1a;
     border-radius: 24px;
     padding: 3rem;
-    margin-bottom: 3rem;
     position: relative;
     overflow: hidden;
+    margin-bottom: 2rem;
 }
 
 .chart-section::before {
@@ -319,7 +321,8 @@ body {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
     gap: 1.5rem;
-    margin-top: 3rem;
+    margin-top: 1rem;
+    margin-bottom: 2rem;
 }
 
 .action-btn {

@@ -8,3 +8,20 @@
 }
 
 /* Navigation within Header */ 
+
+.quick-actions {
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+    margin-top: 3rem;
+    margin-bottom: 3rem; /* Ensure space between quick-actions and chart-section */
+}
+
+.chart-section {
+    backdrop-filter: blur(20px);
+    background: #ffffff08;
+    border: 1px solid #ffffff1a;
+    border-radius: 24px;
+    padding: 3rem;
+    position: relative;
+    overflow: hidden;
+}

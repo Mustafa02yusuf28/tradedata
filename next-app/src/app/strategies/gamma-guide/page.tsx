@@ -76,7 +76,7 @@ export default function GammaGuidePage() {
         ))}
       </div>
 
-      <div className="chart-section mt-24 mb-8 p-10 rounded-3xl z-0 relative">
+      <div className="chart-section mt-24 mb-16 p-10 rounded-3xl z-0 relative">
         <div className="mb-4">
           <h2 className="chart-title mb-2">{pattern.name}</h2>
           <p className="chart-subtitle">{pattern.description}</p>
@@ -175,7 +175,7 @@ export default function GammaGuidePage() {
         )}
       </div>
 
-      <div className="chart-section mt-8 p-10 rounded-3xl z-0 relative">
+      <div className="chart-section mt-16 mb-16 p-10 rounded-3xl z-0 relative">
         <h3 className="chart-title mb-2">Market Implications</h3>
         <ul className="list-disc list-inside space-y-2 text-white/80">
           {pattern.implications.map((implication, index) => (
