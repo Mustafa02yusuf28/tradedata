@@ -77,11 +77,11 @@ const Header = () => {
               </svg>
             </button>
             {!isAuthenticated ? (
-              <Link href="/api/auth/signin" className="bg-gradient-to-r from-[#00ffcc] to-[#0080ff] text-black px-6 py-3 rounded-xl font-semibold transition-all duration-300 hover:transform hover:-translate-y-0.5 hover:shadow-lg hover:shadow-[#00ffcc]/40">
+              <Link href="/api/auth/signin" className="hidden md:inline-block bg-gradient-to-r from-[#00ffcc] to-[#0080ff] text-black px-6 py-3 rounded-xl font-semibold transition-all duration-300 hover:transform hover:-translate-y-0.5 hover:shadow-lg hover:shadow-[#00ffcc]/40">
                 Sign In
               </Link>
             ) : (
-              <Link href="/api/auth/signout" className="ml-4 bg-gray-700 text-white px-6 py-3 rounded-xl font-semibold transition-all duration-300 hover:bg-gray-600">
+              <Link href="/api/auth/signout" className="hidden md:inline-block ml-4 bg-gray-700 text-white px-6 py-3 rounded-xl font-semibold transition-all duration-300 hover:bg-gray-600">
                 Sign Out
               </Link>
             )}
@@ -109,6 +109,16 @@ const Header = () => {
                 </Link>
               );
             })}
+            {/* Sign In link for mobile menu */}
+            {!isAuthenticated && (
+              <Link
+                href="/api/auth/signin"
+                className="block w-full text-center mt-4 bg-gradient-to-r from-[#00ffcc] to-[#0080ff] text-black px-6 py-3 rounded-xl font-semibold transition-all duration-300"
+                onClick={() => setIsMobileMenuOpen(false)}
+              >
+                Sign In
+              </Link>
+            )}
           </div>
         </div>
       )}
