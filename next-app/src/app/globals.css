@@ -138,7 +138,7 @@ body {
 .dashboard-title {
     font-size: 3rem;
     font-weight: 800;
-    margin-bottom: 3rem;
+    margin-bottom: 2rem;
     background: linear-gradient(45deg, #ffffff, #00ffcc);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -152,12 +152,17 @@ body {
     to { text-shadow: 0 0 30px rgba(0, 255, 204, 0.8); }
 }
 
+.strategies-title {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+}
+
 /* Stats Cards */
 .stats-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     gap: 2rem;
-    margin-bottom: 4rem;
+    margin-bottom: 2rem;
 }
 
 .stat-card {
@@ -172,6 +177,8 @@ body {
     cursor: pointer;
     margin-top: 1rem;
     margin-bottom: 1rem;
+    margin-left: 1rem;
+    margin-right: 1rem;
 }
 
 .stat-card::before {
