@@ -86,7 +86,7 @@ export default function GammaGuidePage() {
         ) : (
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-x-8 gap-y-16">
             {/* Individual Gamma Chart */}
-            <div className="stat-card rounded-xl">
+            <div className="stat-card-gamma rounded-xl">
               <h3 className="font-semibold mb-2 text-neon-cyan">Individual Gamma Distribution</h3>
               <div style={{ minHeight: 260, height: 260 }}>
                 <ResponsiveContainer width="100%" height="100%">
@@ -107,7 +107,7 @@ export default function GammaGuidePage() {
             </div>
 
             {/* Total Gamma Chart */}
-            <div className="stat-card rounded-xl">
+            <div className="stat-card-gamma rounded-xl">
               <h3 className="font-semibold mb-2 text-neon-cyan">Total Gamma per Strike</h3>
               <div style={{ minHeight: 260, height: 260 }}>
                 <ResponsiveContainer width="100%" height="100%">
@@ -126,7 +126,7 @@ export default function GammaGuidePage() {
             </div>
 
             {/* Net Gamma Chart */}
-            <div className="stat-card rounded-xl">
+            <div className="stat-card-gamma rounded-xl">
               <h3 className="font-semibold mb-2 text-neon-cyan">Net Gamma (Call - Put)</h3>
               <div style={{ minHeight: 260, height: 260 }}>
                 <ResponsiveContainer width="100%" height="100%">
@@ -146,7 +146,7 @@ export default function GammaGuidePage() {
             </div>
 
             {/* Cumulative Gamma Chart */}
-            <div className="stat-card rounded-xl" style={{ border: '2px solid #00ffcc33' }}>
+            <div className="stat-card-gamma rounded-xl" style={{ border: '2px solid #00ffcc33' }}>
               <h3 className="font-semibold mb-2 text-neon-cyan">Cumulative Gamma <span className="text-yellow-400">⭐ Most Important!</span></h3>
               <div style={{ minHeight: 260, height: 260 }}>
                 <ResponsiveContainer width="100%" height="100%">

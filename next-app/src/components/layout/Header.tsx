@@ -57,16 +57,15 @@ const Header = () => {
             {/* Mobile menu button */}
             <button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className="md:hidden inline-flex items-center justify-center p-2 rounded-md text-white/70 hover:text-[#00ffcc] hover:bg-white/10 transition-all duration-300"
+              className="mobile-only inline-flex items-center justify-center p-2 rounded-md text-white/70 hover:text-[#00ffcc] hover:bg-white/10 transition-all duration-300"
             >
               <span className="sr-only">Open main menu</span>
               <svg
-                className="h-6 w-6 transition-transform duration-300"
+                className="h-6 w-6"
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
-                style={{ transform: isMobileMenuOpen ? 'rotate(45deg)' : 'rotate(0deg)' }}
               >
                 <path
                   strokeLinecap="round"
@@ -76,15 +75,18 @@ const Header = () => {
                 />
               </svg>
             </button>
-            {!isAuthenticated ? (
-              <Link href="/api/auth/signin" className="hidden md:inline-block bg-gradient-to-r from-[#00ffcc] to-[#0080ff] text-black px-6 py-3 rounded-xl font-semibold transition-all duration-300 hover:transform hover:-translate-y-0.5 hover:shadow-lg hover:shadow-[#00ffcc]/40">
-                Sign In
-              </Link>
-            ) : (
-              <Link href="/api/auth/signout" className="hidden md:inline-block ml-4 bg-gray-700 text-white px-6 py-3 rounded-xl font-semibold transition-all duration-300 hover:bg-gray-600">
-                Sign Out
-              </Link>
-            )}
+            {/* Desktop Sign In / Sign Out */}
+            <div className="desktop-only">
+              {!isAuthenticated ? (
+                <Link href="/api/auth/signin" className="bg-gradient-to-r from-[#00ffcc] to-[#0080ff] text-black px-6 py-3 rounded-xl font-semibold transition-all duration-300 hover:transform hover:-translate-y-0.5 hover:shadow-lg hover:shadow-[#00ffcc]/40">
+                  Sign In
+                </Link>
+              ) : (
+                <Link href="/api/auth/signout" className="ml-4 bg-gray-700 text-white px-6 py-3 rounded-xl font-semibold transition-all duration-300 hover:bg-gray-600">
+                  Sign Out
+                </Link>
+              )}
+            </div>
           </div>
         </div>
       </div>

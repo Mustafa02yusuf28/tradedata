@@ -79,7 +79,7 @@ export default function DashboardPage() {
 
       {/* Stats Grid */}
       <div className="stats-grid">
-        <div className="stat-card strategies">
+        <div className="stat-card-dashboard strategies">
           <div className="stat-icon">📊</div>
           <div className="stat-label">Trading Strategies</div>
           <div className="stat-value">24</div>
@@ -88,7 +88,7 @@ export default function DashboardPage() {
           </div>
         </div>
 
-        <div className="stat-card portfolio">
+        <div className="stat-card-dashboard portfolio">
           <div className="stat-icon">💰</div>
           <div className="stat-label">Portfolio Value</div>
           <div className="stat-value">$12,345</div>
@@ -97,7 +97,7 @@ export default function DashboardPage() {
           </div>
         </div>
 
-        <div className="stat-card news">
+        <div className="stat-card-dashboard news">
           <div className="stat-icon">📰</div>
           <div className="stat-label">Latest News</div>
           <div className="stat-value">15</div>

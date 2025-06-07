@@ -2,6 +2,26 @@
 @tailwind components;
 @tailwind utilities;
 
+.mobile-only {
+  display: block;
+}
+.desktop-only {
+  display: none;
+}
+
+@media (min-width: 768px) {
+  .mobile-only {
+    display: none;
+  }
+  .desktop-only {
+    display: block;
+  }
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
 * {
     margin: 0;
     padding: 0;
@@ -138,6 +158,7 @@ body {
 .dashboard-title {
     font-size: 3rem;
     font-weight: 800;
+    
     margin-bottom: 2rem;
     background: linear-gradient(45deg, #ffffff, #00ffcc);
     -webkit-background-clip: text;
@@ -146,7 +167,23 @@ body {
     text-align: center;
     animation: glow 2s ease-in-out infinite alternate;
 }
-
+.strategies-title {
+    font-size: 3rem;
+    font-weight: 800;
+    
+            
+    background: linear-gradient(45deg, #ffffff, #00ffcc);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-align: center;
+    animation: glow 2s ease-in-out infinite alternate;
+}
+.strategies-title:hover {
+  
+    animation: glow 5s ease-in-out infinite alternate;
+    
+}
 @keyframes glow {
     from { text-shadow: 0 0 20px rgba(0, 255, 204, 0.5); }
     to { text-shadow: 0 0 30px rgba(0, 255, 204, 0.8); }
@@ -157,14 +194,38 @@ body {
     margin-bottom: 1rem;
 }
 
+/* New, dedicated grid for the /strategies page */
+.strategies-grid {
+    display: grid;
+    gap: 2rem; /* Default gap */
+    padding: 1rem;
+    margin-top: 2rem;
+    
+    /* Responsive columns */
+    grid-template-columns: repeat(2, 1fr); /* 2 columns on mobile */
+}
+
+@media (min-width: 768px) { /* md breakpoint */
+    .strategies-grid {
+        grid-template-columns: repeat(3, 1fr); /* 3 columns on tablet */
+    }
+}
+
+@media (min-width: 1024px) { /* lg breakpoint */
+    .strategies-grid {
+        grid-template-columns: repeat(4, 1fr); /* 4 columns on desktop */
+    }
+}
+
 /* Stats Cards */
 .stats-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     gap: 2rem;
-    margin-bottom: 2rem;
+    margin-bottom: 4rem;
 }
 
+/* For the simple navigation cards on the /strategies page */
 .stat-card {
     background: rgba(255, 255, 255, 0.05);
     backdrop-filter: blur(20px);
@@ -175,13 +236,84 @@ body {
     position: relative;
     overflow: hidden;
     cursor: pointer;
-    margin-top: 1rem;
-    margin-bottom: 1rem;
-    margin-left: 1rem;
-    margin-right: 1rem;
+    /* Margins are removed here because spacing is handled by the parent grid's 'gap' property */
 }
 
 .stat-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, #00ffcc, #0080ff, #ffd900);
+    transform: scaleX(0);
+    transition: transform 0.3s ease;
+}
+
+.stat-card:hover::before {
+    transform: scaleX(1);
+}
+
+.stat-card:hover {
+    transform: translateY(-10px) scale(1.02);
+    box-shadow: 0 20px 40px rgba(0, 255, 204, 0.2);
+    border-color: rgba(0, 255, 204, 0.3);
+}
+
+/* For the dashboard page cards */
+.stat-card-dashboard {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 20px;
+    padding: 2rem;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+}
+
+.stat-card-dashboard::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, #00ffcc, #0080ff, #d9ff00);
+    transform: scaleX(0);
+    transition: transform 0.3s ease;
+}
+
+.stat-card-dashboard:hover::before {
+    transform: scaleX(1);
+}
+
+.stat-card-dashboard:hover {
+    transform: translateY(-10px) scale(1.02);
+    box-shadow: 0 20px 40px rgba(0, 255, 204, 0.2);
+    border-color: rgba(0, 255, 204, 0.3);
+}
+.mt-32{
+    margin-top: 2rem;
+}
+/* New container for the risk chart on the strategies page */
+.risk-chart-container {
+ 
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 20px;
+    padding: 2rem;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+}
+.risk-chart-container::before{
     content: '';
     position: absolute;
     top: 0;
@@ -193,11 +325,46 @@ body {
     transition: transform 0.3s ease;
 }
 
-.stat-card:hover::before {
+.risk-chart-container:hover::before{
+    transform: scaleX(1);
+}
+.risk-chart-container:hover {
+    transform: translateY(-10px) scale(1.02);
+    box-shadow: 0 20px 40px rgba(0, 255, 204, 0.2);
+    border-color: rgba(0, 255, 204, 0.3);
+}
+/* For the complex chart cards on the /strategies/gamma-guide page */
+.stat-card-gamma {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 20px;
+    padding: 2rem;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+}
+
+.stat-card-gamma::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, #00ffcc, #0080ff, #ff0080);
+    transform: scaleX(0);
+    transition: transform 0.3s ease;
+}
+
+.stat-card-gamma:hover::before {
     transform: scaleX(1);
 }
 
-.stat-card:hover {
+.stat-card-gamma:hover {
     transform: translateY(-10px) scale(1.02);
     box-shadow: 0 20px 40px rgba(0, 255, 204, 0.2);
     border-color: rgba(0, 255, 204, 0.3);
@@ -215,7 +382,8 @@ body {
     transition: all 0.3s ease;
 }
 
-.stat-card:hover .stat-icon {
+.stat-card:hover .stat-icon,
+.stat-card-gamma:hover .stat-icon {
     transform: rotate(10deg) scale(1.1);
 }
 
