@@ -22,7 +22,11 @@ export async function GET(request: NextRequest) {
 
   // 2. Execute the Python script
   const scriptPath = path.join(process.cwd(), 'scripts', 'scraper.py');
-  const pythonProcess = spawn('python', [scriptPath]);
+  const pythonProcess = spawn('python', [scriptPath], {
+    env: {
+      ...process.env,
+    },
+  });
 
   // 3. Log output for debugging in Vercel
   pythonProcess.stdout.on('data', (data) => {

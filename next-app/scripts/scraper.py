@@ -31,14 +31,29 @@ async def scrape_financial_juice():
         await context.add_init_script("Object.defineProperty(navigator, 'webdriver', {get: () => undefined})")
         page = await context.new_page()
         try:
-            await page.goto("https://www.financialjuice.com/home", timeout=90000)
-            await page.wait_for_timeout(5000)
-            await page.locator('body').click()
+            print("Navigating to financialjuice.com...")
+            await page.goto("https://www.financialjuice.com/home", timeout=90000, wait_until='domcontentloaded')
+
+            print("Waiting for page to settle and checking for cookie banner...")
+            await page.wait_for_timeout(random.randint(3000, 5000))
+
+            # Try to find and click the "Accept all" button for cookies
+            accept_button = page.locator('button:has-text("Accept all")')
+            if await accept_button.is_visible(timeout=5000):
+                print("Cookie banner found. Clicking 'Accept all'.")
+                await accept_button.click()
+                await page.wait_for_timeout(random.randint(2000, 3000))
+            else:
+                print("No cookie banner found or it was not visible.")
+
+            print("Waiting for the main news feed to be available...")
             await page.wait_for_selector("#mainFeed", state="attached", timeout=60000)
+            
+            print("Waiting for at least one headline item to become visible...")
             await page.wait_for_selector(".headline-item", state="visible", timeout=60000)
             
-            print("Waiting 10 seconds for the live feed to update...")
-            await page.wait_for_timeout(10000) # Increased wait time
+            print("Feed is visible. Waiting a few seconds for live content to load...")
+            await page.wait_for_timeout(random.randint(5000, 8000))
 
             main_feed_html = await page.inner_html("#mainFeed")
             
