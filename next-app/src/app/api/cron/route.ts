@@ -7,18 +7,7 @@ import clientPromise from '@/lib/mongodb';
 export async function GET(request: NextRequest) {
   // 1. Authorize the request
   const authHeader = request.headers.get('authorization');
-  const expectedHeader = `Bearer ${process.env.CRON_SECRET}`;
-
-  // --- Extensive logging to debug the 401 error ---
-  console.log("--- Cron Job Authorization Check ---");
-  console.log(`Received Header: [${authHeader}]`);
-  console.log(`Received Header Length: ${authHeader?.length}`);
-  console.log(`Expected Header Pattern: [Bearer ...]`);
-  console.log(`Expected CRON_SECRET Length: ${process.env.CRON_SECRET?.length}`);
-  // --- End of logging ---
-
-  if (authHeader !== expectedHeader) {
-    console.error("Authorization failed. Headers do not match.");
+  if (authHeader !== `Bearer ${process.env.CRON_SECRET}`) {
     return new NextResponse('Unauthorized', { status: 401 });
   }
 
