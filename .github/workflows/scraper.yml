@@ -12,7 +12,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Call the cron job endpoint
+        env:
+          CRON_SECRET_VALUE: ${{ secrets.CRON_SECRET }}
         run: |
           curl --request GET \
           --url '${{ secrets.DEPLOYMENT_URL }}/api/cron' \
-          --header 'Authorization: Bearer ${{ secrets.CRON_SECRET }}' 
+          --header "Authorization: Bearer $CRON_SECRET_VALUE" 
