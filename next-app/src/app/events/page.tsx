@@ -1,5 +1,8 @@
 import React from 'react';
 
+// This line tells Next.js to treat this page as a fully dynamic page
+export const dynamic = 'force-dynamic';
+
 // Define a type for a single news item for type safety
 type NewsItem = {
   _id: string;
