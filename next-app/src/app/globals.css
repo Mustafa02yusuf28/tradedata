@@ -576,3 +576,32 @@ body {
     0%, 80%, 100% { transform: scale(0); opacity: 0.5; }
     40% { transform: scale(1); opacity: 1; }
 }
+
+/* For the news items on the /events page */
+.news-item-card {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 2rem; /* 8px */
+    padding: 1rem; /* 24px */
+    margin-bottom: 0.5rem; /* 24px, replaces space-y-6 */
+    transition: all 0.1s ease-in-out;
+}
+
+.news-item-card:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(0, 255, 204, 0.3);
+    transform: translateY(-4px);
+    box-shadow: 0 8px 30px rgba(0, 255, 204, 0.1);
+}
+
+.news-item-card h2 {
+    font-size: 1rem; /* text-base */
+    font-weight: 600;
+    color: #fdffff; /* text-neon-cyan */
+    margin-bottom: 1rem;
+}
+
+.news-item-card p {
+    font-size: 0.75rem; /* text-xs */
+    color: rgba(255, 255, 255, 0.808);
+}
