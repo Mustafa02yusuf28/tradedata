@@ -295,44 +295,36 @@ body {
     box-shadow: 0 20px 40px rgba(0, 255, 204, 0.2);
     border-color: rgba(0, 255, 204, 0.3);
 }
-.mt-32{
-    margin-top: 2rem;
-}
-/* New container for the risk chart on the strategies page */
-.risk-chart-container {
- 
+
+/* For the news items on the /events page */
+.news-item-card {
     background: rgba(255, 255, 255, 0.05);
-    backdrop-filter: blur(20px);
     border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 20px;
-    padding: 2rem;
-    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-    position: relative;
-    overflow: hidden;
-    cursor: pointer;
-    margin-top: 2rem;
-    margin-bottom: 2rem;
-}
-.risk-chart-container::before{
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 2px;
-    background: linear-gradient(90deg, #00ffcc, #0080ff, #ff0080);
-    transform: scaleX(0);
-    transition: transform 0.3s ease;
+    border-radius: 1rem; /* 8px */
+    padding: 1rem; /* 24px */
+    margin-bottom: 0.5rem; /* 24px */
+    transition: all 0.3s ease-in-out;
 }
 
-.risk-chart-container:hover::before{
-    transform: scaleX(1);
-}
-.risk-chart-container:hover {
-    transform: translateY(-10px) scale(1.02);
-    box-shadow: 0 20px 40px rgba(0, 255, 204, 0.2);
+.news-item-card:hover {
+    background: rgba(255, 255, 255, 0.1);
     border-color: rgba(0, 255, 204, 0.3);
+    transform: translateY(-4px);
+    box-shadow: 0 8px 30px rgba(0, 255, 204, 0.1);
 }
+
+.news-item-card h2 {
+    font-size: 1rem; /* text-base */
+    font-weight: 600;
+    color: #ffffff; /* text-neon-cyan */
+    margin-bottom: 0.5rem;
+}
+
+.news-item-card p {
+    font-size: 0.75rem; /* text-xs */
+    color: rgba(255, 255, 255, 0.6);
+}
+
 /* For the complex chart cards on the /strategies/gamma-guide page */
 .stat-card-gamma {
     background: rgba(255, 255, 255, 0.05);
