@@ -2,12 +2,22 @@ import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 import { spawn } from 'child_process';
 import path from 'path';
+import clientPromise from '@/lib/mongodb';
 
 export async function GET(request: NextRequest) {
   // 1. Authorize the request
   const authHeader = request.headers.get('authorization');
   if (!process.env.CRON_SECRET || authHeader !== `Bearer ${process.env.CRON_SECRET}`) {
     return new NextResponse('Unauthorized', { status: 401 });
+  }
+
+  // Ensure DB connection is alive before starting the scraper
+  try {
+    await clientPromise;
+    console.log("MongoDB connection successful. Starting scraper.");
+  } catch (dbError) {
+    console.error("MongoDB connection failed:", dbError);
+    return new NextResponse('Database connection failed.', { status: 500 });
   }
 
   // 2. Execute the Python script
