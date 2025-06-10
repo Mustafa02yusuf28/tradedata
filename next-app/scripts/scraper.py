@@ -25,7 +25,7 @@ class DateTimeEncoder(json.JSONEncoder):
 
 async def scrape_financial_juice():
     async with async_playwright() as p:
-        browser = await p.chromium.launch(executable_path="/usr/bin/google-chrome-stable")
+        browser = await p.chromium.launch()
         context = await browser.new_context(
             user_agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36",
             viewport={'width': 1920, 'height': 1080}
