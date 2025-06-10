@@ -5,13 +5,13 @@ FROM mcr.microsoft.com/playwright/python:v1.44.0-jammy
 WORKDIR /app
 
 # Copy the requirements file from the build context into the container
-COPY requirements.txt .
+COPY next-app/requirements.txt .
 
 # Install the Python dependencies
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Copy the rest of your application code (specifically the scripts folder)
-COPY scripts/ ./scripts/
+COPY next-app/scripts/ ./scripts/
 
 # The command to run your application
 CMD ["python", "scripts/scraper.py"] 
