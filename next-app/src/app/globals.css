@@ -167,6 +167,18 @@ body {
     text-align: center;
     animation: glow 2s ease-in-out infinite alternate;
 }
+.events-title {
+   font-size: 3rem;
+    font-weight: 800;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    background: linear-gradient(45deg, #ffffff, #00ffcc);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-align: center;
+    animation: glow 2s ease-in-out infinite alternate;
+}
 .strategies-title {
     font-size: 3rem;
     font-weight: 800;
