@@ -91,20 +91,9 @@ async def scrape_financial_juice():
             print("-------------------------")
 
             uri = os.getenv("MONGODB_URI")
-            
-            # --- Add logging to verify the URI ---
-            print("--- Verifying Database Connection ---")
-            if uri:
-                print("MONGODB_URI found. Checking target server...")
-                try:
-                    # Safely print the server address without the password
-                    server_info = uri.split('@')[1]
-                    print(f"  -> Attempting to connect to server: {server_info}")
-                except IndexError:
-                    print("  -> Could not parse server info from URI. Is the format correct?")
-            else:
-                print("  -> MONGODB_URI not found. Please check your .env.local file and its location.")
-            print("---------------------------------")
+            if not uri:
+                print("FATAL: MONGODB_URI not found. The application cannot start.")
+                return None
 
             with MongoClient(uri, server_api=ServerApi('1')) as client:
                 try:
