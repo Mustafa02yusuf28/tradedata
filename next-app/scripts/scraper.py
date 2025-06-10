@@ -7,7 +7,7 @@ import os
 from pymongo.mongo_client import MongoClient
 from pymongo.server_api import ServerApi
 from dotenv import load_dotenv
-from datetime import datetime, UTC
+from datetime import datetime, timezone
 import time
 import traceback
 
@@ -83,7 +83,7 @@ async def scrape_financial_juice():
                             "_id": headline_id,  # Use as MongoDB unique key
                             "title": title,
                             "time": time,
-                            "timestamp": datetime.now(UTC)
+                            "timestamp": datetime.now(timezone.utc)
                         })
             
             print("--- Scraped News Data ---")
