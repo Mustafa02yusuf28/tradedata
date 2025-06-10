@@ -10,6 +10,8 @@ from dotenv import load_dotenv
 from datetime import datetime, timezone
 import time
 import traceback
+from http.server import HTTPServer, BaseHTTPRequestHandler
+import threading
 
 # Construct the path to the .env.local file in the parent directory
 dotenv_path = os.path.join(os.path.dirname(__file__), '..', '.env.local')
@@ -128,7 +130,25 @@ async def scrape_financial_juice():
                 await context.close()
                 await browser.close()
 
+class SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
+    def do_GET(self):
+        self.send_response(200)
+        self.send_header('Content-type', 'text/html')
+        self.end_headers()
+        self.wfile.write(b'Scraper is running.')
+
+def run_web_server():
+    port = int(os.getenv('PORT', 10000))
+    httpd = HTTPServer(('0.0.0.0', port), SimpleHTTPRequestHandler)
+    print(f"Starting web server on port {port} to keep the service alive...")
+    httpd.serve_forever()
+
 if __name__ == "__main__":
+    # Start the web server in a separate thread
+    server_thread = threading.Thread(target=run_web_server)
+    server_thread.daemon = True
+    server_thread.start()
+
     print("Scraper starting in continuous mode...")
     while True:
         try:
