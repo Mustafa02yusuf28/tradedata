@@ -1,7 +1,13 @@
-import React from 'react';
-import { getNewsFromDb, NewsItem } from '@/lib/news';
+"use client";
 
-export const revalidate = 60; // Revalidate the page every 60 seconds
+import { useState, useEffect } from 'react';
+
+// Define the NewsItem type for client-side usage
+interface NewsItem {
+  _id: string;
+  title: string;
+  timestamp: string;
+}
 
 // Helper function to format the date nicely
 function formatDate(isoString: string) {
@@ -15,8 +21,7 @@ function formatDate(isoString: string) {
   return `${year}-${month}-${day} ${hours}:${minutes}`;
 }
 
-// Restoring the locally defined NewsItemCard component.
-// Using basic divs for now to ensure the build passes.
+// The card component for displaying a single news item
 function NewsItemCard({ item }: { item: NewsItem }) {
   return (
     <div className="news-item-card mb-4 break-inside-avoid p-4 border rounded-lg">
@@ -26,17 +31,51 @@ function NewsItemCard({ item }: { item: NewsItem }) {
   );
 }
 
-export default async function EventsPage() {
-  const { news, error } = await getNewsFromDb();
+export default function EventsPage() {
+  const [news, setNews] = useState<NewsItem[]>([]);
+  const [error, setError] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+
+  const fetchNews = async () => {
+    try {
+      const res = await fetch('/api/news');
+      if (!res.ok) {
+        throw new Error('Failed to fetch news feed.');
+      }
+      const data = await res.json();
+      setNews(data.news);
+      setError(null);
+    } catch (err) {
+      if (err instanceof Error) {
+        setError(err.message);
+      } else {
+        setError('An unknown error occurred.');
+      }
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    // Fetch news immediately on component mount
+    fetchNews();
+
+    // Then fetch news every 30 seconds
+    const interval = setInterval(fetchNews, 30000);
+
+    // Clean up the interval when the component unmounts
+    return () => clearInterval(interval);
+  }, []);
 
   return (
-    <div className="max-w-7xl mx-auto pt-16 md:pt-24 px-4">
-      <h1 className="text-5xl font-bold text-center text-white animate-glow strategies-title">
-        Real-Time Financial Events
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <h1 className="text-4xl font-bold tracking-tight text-white sm:text-5xl md:text-6xl text-center mb-12">
+        Live News Feed
       </h1>
       
-
-      {error ? (
+      {isLoading ? (
+        <div className="text-center text-gray-400">Loading latest news...</div>
+      ) : error ? (
         <div className="text-center text-red-400 bg-red-500/10 p-4 rounded-lg">
           <p className="font-semibold">Could not load news feed</p>
           <p className="text-red-500">{error}</p>
