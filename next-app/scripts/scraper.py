@@ -8,6 +8,8 @@ from pymongo.mongo_client import MongoClient
 from pymongo.server_api import ServerApi
 from dotenv import load_dotenv
 from datetime import datetime, UTC
+import time
+import traceback
 
 # Construct the path to the .env.local file in the parent directory
 dotenv_path = os.path.join(os.path.dirname(__file__), '..', '.env.local')
@@ -57,17 +59,14 @@ async def scrape_financial_juice():
 
             main_feed_html = await page.inner_html("#mainFeed")
             
-            # Save the scraped HTML for debugging
-            with open("debug_feed.html", "w", encoding="utf-8") as f:
-                f.write(main_feed_html)
-            print("Saved the raw feed to debug_feed.html")
-
             soup = BeautifulSoup(main_feed_html, "html.parser")
             all_items = soup.find_all(class_="headline-item")
 
-            print(f"Found {len(all_items)} total items in the feed. Their IDs are:")
-            all_ids = [item.get('data-headlineid', 'N/A') for item in all_items]
-            print(all_ids)
+            if not all_items:
+                print("No headline items found in the feed. The page structure may have changed.")
+                return None
+
+            print(f"Found {len(all_items)} total items in the feed.")
 
             news_list = []
             for item in all_items:
@@ -86,7 +85,27 @@ async def scrape_financial_juice():
                             "time": time,
                             "timestamp": datetime.now(UTC)
                         })
+            
+            print("--- Scraped News Data ---")
+            print(json.dumps(news_list, indent=2, cls=DateTimeEncoder))
+            print("-------------------------")
+
             uri = os.getenv("MONGODB_URI")
+            
+            # --- Add logging to verify the URI ---
+            print("--- Verifying Database Connection ---")
+            if uri:
+                print("MONGODB_URI found. Checking target server...")
+                try:
+                    # Safely print the server address without the password
+                    server_info = uri.split('@')[1]
+                    print(f"  -> Attempting to connect to server: {server_info}")
+                except IndexError:
+                    print("  -> Could not parse server info from URI. Is the format correct?")
+            else:
+                print("  -> MONGODB_URI not found. Please check your .env.local file and its location.")
+            print("---------------------------------")
+
             with MongoClient(uri, server_api=ServerApi('1')) as client:
                 try:
                     client.admin.command('ping')
@@ -102,31 +121,38 @@ async def scrape_financial_juice():
                 for news_item in news_list:
                     result = collection.update_one(
                         {"_id": news_item["_id"]},
-                        {
-                            "$set": {
-                                "title": news_item["title"],
-                                "timestamp": news_item["timestamp"]
-                            },
-                            "$setOnInsert": {"time": news_item["time"]}
-                        },
+                        {"$set": news_item},
                         upsert=True
                     )
                     if result.modified_count > 0 or result.upserted_id is not None:
                         update_count += 1
                 
-                print(f"Successfully upserted {update_count} headlines into the database.")
+                print(f"Successfully saved {update_count} headlines to the database.")
 
             return news_list
         except Exception as e:
-            print(f"An error occurred: {e}")
-            await page.screenshot(path="error_screenshot.png")
-            print("A screenshot named 'error_screenshot.png' has been saved to help diagnose the issue.")
+            print(f"An error occurred during scraping: {e}")
+            print("The scraper will retry after the sleep interval.")
             return None
         finally:
-            await context.close()
-            await browser.close()
+            if 'browser' in locals() and browser.is_connected():
+                await context.close()
+                await browser.close()
 
 if __name__ == "__main__":
-    news = asyncio.run(scrape_financial_juice())
-    if news:
-        print(json.dumps(news, indent=2, cls=DateTimeEncoder)) 
+    print("Scraper starting in continuous mode...")
+    while True:
+        try:
+            print("--- Starting new scrape cycle ---")
+            news = asyncio.run(scrape_financial_juice())
+            if news:
+                print(f"Successfully scraped {len(news)} items.")
+            else:
+                print("Scrape cycle completed with no new items or an error occurred.")
+        except Exception as e:
+            print(f"An unexpected error occurred in the main loop: {e}")
+            traceback.print_exc()
+        
+        sleep_duration = random.randint(151, 299)
+        print(f"--- Scrape cycle finished. Sleeping for {sleep_duration} seconds. ---")
+        time.sleep(sleep_duration) 
