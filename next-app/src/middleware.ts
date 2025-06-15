@@ -1,6 +1,5 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
-import { verifyToken } from './lib/auth';
 
 // Add paths that require authentication
 const protectedPaths = ['/strategies', '/news', '/events', '/community'];
@@ -13,16 +12,12 @@ export async function middleware(request: NextRequest) {
     const token = request.cookies.get('token')?.value;
 
     if (!token) {
-      // Instead of redirecting, let the client handle showing the auth modal
-      return NextResponse.next();
+      // Redirect to login with redirect param if not authenticated
+      const redirectUrl = new URL('/login', request.url);
+      redirectUrl.searchParams.set('redirect', path);
+      return NextResponse.redirect(redirectUrl);
     }
-
-    // Verify token
-    const payload = await verifyToken(token);
-    if (!payload) {
-      // Instead of redirecting, let the client handle showing the auth modal
-      return NextResponse.next();
-    }
+    // Optionally: verify token here
   }
 
   return NextResponse.next();

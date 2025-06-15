@@ -23,7 +23,7 @@ export default function Header() {
       }
     };
     checkAuth();
-  }, []);
+  }, [pathname]);
 
   const handleProtectedRouteClick = (e: React.MouseEvent) => {
     if (!isAuthenticated) {
