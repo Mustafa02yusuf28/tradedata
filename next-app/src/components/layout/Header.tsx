@@ -1,7 +1,7 @@
 "use client";
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 
 const navigation = [
   { name: 'Dashboard', path: '/dashboard' },
@@ -15,44 +15,59 @@ const Header = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const pathname = usePathname();
+  const router = useRouter();
 
   useEffect(() => {
-    // TODO: Implement session check with NextAuth
-    setIsAuthenticated(false);
+    // Check if user is authenticated
+    const checkAuth = async () => {
+      try {
+        const res = await fetch('/api/auth/check');
+        setIsAuthenticated(res.ok);
+      } catch {
+        setIsAuthenticated(false);
+      }
+    };
+    checkAuth();
   }, []);
+
+  const handleLogout = async () => {
+    try {
+      await fetch('/api/auth/logout', { method: 'POST' });
+      setIsAuthenticated(false);
+      router.push('/login');
+    } catch {
+      // Optionally log a generic error or do nothing
+    }
+  };
 
   return (
     <header className="relative z-10 backdrop-blur-[20px] bg-white/5 border-b border-white/10 px-8 py-4">
       <div className="max-w-7xl mx-auto">
-        <div className="flex justify-between items-center h-16">
-          <div className="flex items-center space-x-8">
-            <Link href="/dashboard" className="flex items-center">
-              <span className="text-2xl font-bold bg-gradient-to-r from-[#00ffcc] to-[#0080ff] bg-clip-text text-transparent">
-                TradingPro
-              </span>
+        <div className="flex items-center justify-between">
+          <div className="flex items-center">
+            <Link href="/" className="text-2xl font-bold bg-gradient-to-r from-[#00ffcc] to-[#0080ff] bg-clip-text text-transparent">
+              TradingPro
             </Link>
-            {/* Desktop Navigation Links */}
-            <nav className="hidden md:flex space-x-8">
+            <nav className="hidden md:flex ml-10 space-x-4">
               {navigation.map((item) => {
                 const isActive = pathname === item.path;
                 return (
                   <Link
                     key={item.name}
                     href={item.path}
-                    className={`relative px-4 py-2 rounded-lg transition-all duration-300 overflow-hidden group ${
+                    className={`px-4 py-2 rounded-xl text-sm font-medium transition-all duration-300 ${
                       isActive
-                        ? 'text-[#00ffcc] bg-[#00ffcc]/10 transform -translate-y-0.5'
-                        : 'text-white/70 hover:text-[#00ffcc] hover:bg-[#00ffcc]/10 hover:transform hover:-translate-y-0.5'
+                        ? 'text-[#00ffcc] bg-[#00ffcc]/10'
+                        : 'text-white/70 hover:text-[#00ffcc] hover:bg-white/5'
                     }`}
                   >
-                    <span className="relative z-10">{item.name}</span>
-                    {/* Shimmer effect */}
-                    <div className="absolute top-0 left-[-100%] w-full h-full bg-gradient-to-r from-transparent via-white/10 to-transparent transition-all duration-500 group-hover:left-[100%]" />
+                    {item.name}
                   </Link>
                 );
               })}
             </nav>
           </div>
+
           <div className="flex items-center space-x-4">
             {/* Mobile menu button */}
             <button
@@ -78,13 +93,16 @@ const Header = () => {
             {/* Desktop Sign In / Sign Out */}
             <div className="desktop-only">
               {!isAuthenticated ? (
-                <Link href="/api/auth/signin" className="bg-gradient-to-r from-[#00ffcc] to-[#0080ff] text-black px-6 py-3 rounded-xl font-semibold transition-all duration-300 hover:transform hover:-translate-y-0.5 hover:shadow-lg hover:shadow-[#00ffcc]/40">
+                <Link href="/login" className="bg-gradient-to-r from-[#00ffcc] to-[#0080ff] text-black px-6 py-3 rounded-xl font-semibold transition-all duration-300 hover:transform hover:-translate-y-0.5 hover:shadow-lg hover:shadow-[#00ffcc]/40">
                   Sign In
                 </Link>
               ) : (
-                <Link href="/api/auth/signout" className="ml-4 bg-gray-700 text-white px-6 py-3 rounded-xl font-semibold transition-all duration-300 hover:bg-gray-600">
+                <button
+                  onClick={handleLogout}
+                  className="ml-4 bg-gray-700 text-white px-6 py-3 rounded-xl font-semibold transition-all duration-300 hover:bg-gray-600"
+                >
                   Sign Out
-                </Link>
+                </button>
               )}
             </div>
           </div>
@@ -112,14 +130,21 @@ const Header = () => {
               );
             })}
             {/* Sign In link for mobile menu */}
-            {!isAuthenticated && (
+            {!isAuthenticated ? (
               <Link
-                href="/api/auth/signin"
+                href="/login"
                 className="block w-full text-center mt-4 bg-gradient-to-r from-[#00ffcc] to-[#0080ff] text-black px-6 py-3 rounded-xl font-semibold transition-all duration-300"
                 onClick={() => setIsMobileMenuOpen(false)}
               >
                 Sign In
               </Link>
+            ) : (
+              <button
+                onClick={handleLogout}
+                className="block w-full text-center mt-4 bg-gray-700 text-white px-6 py-3 rounded-xl font-semibold transition-all duration-300 hover:bg-gray-600"
+              >
+                Sign Out
+              </button>
             )}
           </div>
         </div>
