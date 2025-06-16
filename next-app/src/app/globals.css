@@ -315,7 +315,7 @@ body {
     border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 1rem; /* 8px */
     padding: 1rem; /* 24px */
-    margin-bottom: 0.5rem; /* 24px */
+    margin-bottom: 1rem; /* 24px */
     transition: all 0.3s ease-in-out;
 }
 
@@ -827,7 +827,9 @@ body {
 .footer-title {
   font-size: 0.8rem;
   font-weight: 600;
-  margin-bottom: rem;
+  
+  margin-top: 1rem;
+  text-align: center;
 }
 
 .footer-text{  
@@ -836,5 +838,6 @@ body {
   margin-bottom: 0.5rem;
   margin-left: 1rem;
   margin-right: 1rem;
-  text-align: justify;
+  margin-top: 0.2rem;
+  text-align: center;
 }
