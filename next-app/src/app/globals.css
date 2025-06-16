@@ -629,14 +629,15 @@ body {
   align-items: center;
   justify-content: center;
   overflow: hidden;
+ 
 }
 
 .modal-overlay::before {
   content: "";
   position: absolute;
   inset: 0;
-  backdrop-filter: blur(70px);
-  -webkit-backdrop-filter: blur(120px);
+ 
+  
   z-index: -1;
   pointer-events: none;
   background: rgba(10,10,20,0.08);
@@ -653,30 +654,59 @@ body {
   padding: 0 1rem;
 }
 
-.auth-modal-content {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  min-height: 420px;
-  width: 100%;
-  max-width: 350px;
-  margin: 0 auto;
-  padding: 2.5rem;
-  gap: 2rem;
-  position: relative;
+.stat-card-auth-modal-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-height: 420px;
+    width: 100%;
+    max-width: 350px;
+    margin: 0 auto;
+    padding: 2.5rem;
+    gap: 2rem;
+    
+    background-color: rgb(0, 0, 0);
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 20px;
+    position: relative;
+    backdrop-filter: blur(50px);
+    -webkit-backdrop-filter: blur(50px);
+  }
+  
+  /* Add a blurred background layer inside the modal */
+  .stat-card-auth-modal-content::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: inherit;
+    filter: blur(50px);
+    border-radius: inherit;
+    z-index: -1;
+  }
+.stat-card-auth-modal-content > h2 {
+  margin-bottom: 0.5rem;
 }
-.auth-modal-content > h2 {
-  margin-bottom: 2rem;
-}
-.auth-modal-content > .auth-modal-error {
+.stat-card-auth-modal-content > .auth-modal-error {
   margin-bottom: 1.5rem;
 }
-.auth-modal-content > form {
-  margin-bottom: 2rem;
+.stat-card-auth-modal-content > form {
+  margin-bottom: 1rem;
 }
-.auth-modal-content > .auth-modal-switch {
-  margin-top: 2rem;
+.stat-card-auth-modal-content > .auth-modal-switch {
+  margin-top: 1rem;
 }
+
+
+
+
+
+
+
+
+
+
+
+
 
 .auth-modal-form {
   display: flex;
@@ -792,4 +822,19 @@ body {
   box-shadow: 0 0 8px 1px #00ffcc44;
   text-decoration: none;
   transform: scale(1.04);
+}
+
+.footer-title {
+  font-size: 0.8rem;
+  font-weight: 600;
+  margin-bottom: rem;
+}
+
+.footer-text{  
+  font-size: 0.6rem;
+  font-weight: 400;
+  margin-bottom: 0.5rem;
+  margin-left: 1rem;
+  margin-right: 1rem;
+  text-align: justify;
 }

@@ -70,7 +70,7 @@ export default function AuthModal({ isOpen, onClose, onSuccess }: AuthModalProps
     <>
       <div className="modal-overlay">
         <div className="modal-main-center">
-          <div className="stat-card auth-modal-content">
+          <div className="stat-card-auth-modal-content">
             {/* Close button as first child */}
             <button
               onClick={onClose}
