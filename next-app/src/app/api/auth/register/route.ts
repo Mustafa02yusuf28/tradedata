@@ -34,6 +34,7 @@ export async function POST(request: NextRequest) {
       email,
       password: hashedPassword,
       name,
+      role: 'free', // Default role for new users
       createdAt: new Date(),
     };
 

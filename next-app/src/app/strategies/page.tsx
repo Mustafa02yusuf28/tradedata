@@ -40,7 +40,7 @@ export default function StrategiesPage() {
           {/* Strategy Card: Gamma Guide */}
           <Link href="/strategies/gamma-guide" passHref className="group no-underline">
             <div className="stat-card h-full flex items-center justify-center p-8 text-center bg-white/5 border-2 border-white/20 rounded-2xl transition-all duration-300 hover:border-neon-cyan/80 hover:shadow-[0_8px_32px_0_rgba(0,255,204,0.15)]">
-              <h2 className="text-2xl font-bold text-white">
+              <h2 className="strat-h2-title">
                 Gamma Guide
               </h2>
             </div>
@@ -49,7 +49,7 @@ export default function StrategiesPage() {
           {/* Max Pain Strategy Card */}
           <Link href="/strategies/max-pain" passHref className="group no-underline">
             <div className="stat-card h-full flex items-center justify-center p-8 text-center bg-white/5 border-2 border-white/20 rounded-2xl transition-all duration-300 hover:border-neon-cyan/80 hover:shadow-[0_8px_32px_0_rgba(0,255,204,0.15)]">
-              <h2 className="text-2xl font-bold text-white">
+              <h2 className="strat-h2-title">
                 Max Pain
               </h2>
             </div>
@@ -58,7 +58,7 @@ export default function StrategiesPage() {
           {/* Placeholder Strategy Card 1 */}
           <Link href="#" passHref className="group no-underline">
             <div className="stat-card h-full flex items-center justify-center p-8 text-center bg-white/5 border-2 border-white/20 rounded-2xl transition-all duration-300 hover:border-neon-cyan/80 hover:shadow-[0_8px_32px_0_rgba(0,255,204,0.15)]">
-              <h2 className="text-2xl font-bold text-white">
+              <h2 className="strat-h2-title-locked">
                 Volatility Arbitrage
               </h2>
             </div>
@@ -67,7 +67,7 @@ export default function StrategiesPage() {
           {/* Placeholder Strategy Card 2 */}
           <Link href="#" passHref className="group no-underline">
             <div className="stat-card h-full flex items-center justify-center p-8 text-center bg-white/5 border-2 border-white/20 rounded-2xl transition-all duration-300 hover:border-neon-cyan/80 hover:shadow-[0_8px_32px_0_rgba(0,255,204,0.15)]">
-              <h2 className="text-2xl font-bold text-white">
+              <h2 className="strat-h2-title-locked">
                 Mean Reversion
               </h2>
             </div>

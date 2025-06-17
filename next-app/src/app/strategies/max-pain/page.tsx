@@ -26,16 +26,16 @@ const MaxPainStrategy = () => {
     const roundedPrice = roundToNearestMultiple(price);
     const strikes: number[] = [];
     
-    // Generate 16 strikes below
-    for (let i = 16; i > 0; i--) {
+    // Generate 10 strikes below
+    for (let i = 15; i > 0; i--) {
       strikes.push(roundedPrice - (i * multiple));
     }
     
     // Add current price
     strikes.push(roundedPrice);
     
-    // Generate 16 strikes above
-    for (let i = 1; i <= 16; i++) {
+    // Generate 10 strikes above
+    for (let i = 1; i <= 15; i++) {
       strikes.push(roundedPrice + (i * multiple));
     }
     
