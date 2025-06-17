@@ -1,9 +1,30 @@
 "use client";
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import Link from 'next/link';
+import { BlogPost } from '@/lib/blog';
 
 export default function DashboardPage() {
+  const [latestBlog, setLatestBlog] = useState<BlogPost | null>(null);
+  const [isLoadingBlog, setIsLoadingBlog] = useState(true);
+
   useEffect(() => {
+    // Fetch latest blog post
+    const fetchLatestBlog = async () => {
+      try {
+        const response = await fetch('/api/blog');
+        const data = await response.json();
+        if (data.posts && data.posts.length > 0) {
+          setLatestBlog(data.posts[0]); // Get the latest post
+        }
+      } catch (error) {
+        console.error('Error fetching latest blog:', error);
+      } finally {
+        setIsLoadingBlog(false);
+      }
+    };
+
+    fetchLatestBlog();
+
     // Add hover effects to stat cards
     const statCards = document.querySelectorAll('.stat-card');
     statCards.forEach((card) => {
@@ -73,31 +94,55 @@ export default function DashboardPage() {
     };
   }, []);
 
+  const formatDate = (dateString: string | Date) => {
+    const date = new Date(dateString);
+    return date.toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric'
+    });
+  };
+
   return (
     <main className="main-content">
       <h1 className="dashboard-title">Trading Dashboard</h1>
 
       {/* Stats Grid */}
       <div className="stats-grid">
-        <div className="stat-card-dashboard strategies">
+        <Link href="/strategies" className="stat-card-dashboard strategies cursor-pointer hover:bg-white/10 transition-all duration-300">
           <div className="stat-icon">📊</div>
           <div className="stat-label">Trading Strategies</div>
-          <div className="stat-value">24</div>
+          <div className="stat-value">5</div>
           <div className="stat-change">
-            ↗ +3 this week
+            ↗ +2 this week
           </div>
+        </Link>
+
+        <div className="stat-card-dashboard blog">
+          <div className="stat-label">Latest Blog Post</div>
+          {isLoadingBlog ? (
+            <div className="stat-value">Loading...</div>
+          ) : latestBlog ? (
+            <>
+              <div className="stat-value blog-title">{latestBlog.title}</div>
+              <div className="stat-change">
+                By {latestBlog.author} • {formatDate(latestBlog.createdAt)}
+              </div>
+              <Link href={`/community/post/${latestBlog._id.toString()}`} className="blog-read-more">
+                Read More →
+              </Link>
+            </>
+          ) : (
+            <>
+              <div className="stat-value">No posts yet</div>
+              <div className="stat-change">
+                Be the first to share insights
+              </div>
+            </>
+          )}
         </div>
 
-        <div className="stat-card-dashboard portfolio">
-          <div className="stat-icon">💰</div>
-          <div className="stat-label">Portfolio Value</div>
-          <div className="stat-value">$12,345</div>
-          <div className="stat-change">
-            ↗ +$1,234 (+11.2%)
-          </div>
-        </div>
-
-        <div className="stat-card-dashboard news">
+        <Link href="/news" className="stat-card-dashboard news cursor-pointer hover:bg-white/10 transition-all duration-300">
           <div className="stat-icon">📰</div>
           <div className="stat-label">Latest News</div>
           <div className="stat-value">15</div>
@@ -109,7 +154,7 @@ export default function DashboardPage() {
             </span>
             Live updates
           </div>
-        </div>
+        </Link>
       </div>
 
       {/* Interactive Chart Section */}

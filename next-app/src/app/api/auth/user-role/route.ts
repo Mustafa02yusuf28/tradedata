@@ -10,7 +10,10 @@ export async function GET() {
     
     if (!token) {
       return NextResponse.json(
-        { error: 'Not authenticated' },
+        { 
+          authenticated: false,
+          error: 'Not authenticated' 
+        },
         { status: 401 }
       );
     }
@@ -18,7 +21,10 @@ export async function GET() {
     const payload = await verifyToken(token);
     if (!payload) {
       return NextResponse.json(
-        { error: 'Invalid token' },
+        { 
+          authenticated: false,
+          error: 'Invalid token' 
+        },
         { status: 401 }
       );
     }
@@ -33,13 +39,17 @@ export async function GET() {
 
     if (!user) {
       return NextResponse.json(
-        { error: 'User not found' },
+        { 
+          authenticated: false,
+          error: 'User not found' 
+        },
         { status: 404 }
       );
     }
 
     return NextResponse.json(
       { 
+        authenticated: true,
         role: user.role || 'free',
         email: user.email,
         name: user.name
@@ -49,7 +59,10 @@ export async function GET() {
   } catch (error) {
     console.error('User role check error:', error);
     return NextResponse.json(
-      { error: 'Internal server error' },
+      { 
+        authenticated: false,
+        error: 'Internal server error' 
+      },
       { status: 500 }
     );
   }

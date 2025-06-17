@@ -11,46 +11,48 @@ export default function CommunityPage() {
   const [isSearching, setIsSearching] = useState(false);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [userRole, setUserRole] = useState<string>('free');
+  const [isLoading, setIsLoading] = useState(true);
+  const [isAuthLoading, setIsAuthLoading] = useState(true);
 
   useEffect(() => {
-    // Check authentication status and user role
-    const checkAuth = async () => {
+    // Fetch all data in parallel
+    const fetchAllData = async () => {
       try {
-        const res = await fetch('/api/auth/check');
-        if (res.ok) {
-          setIsAuthenticated(true);
-          await res.json();
-          
-          // Get user role from database
-          const userRes = await fetch('/api/auth/user-role');
-          if (userRes.ok) {
-            const userData = await userRes.json();
-            setUserRole(userData.role || 'free');
-          }
+        // Fetch user role (includes auth check) and posts in parallel
+        const [userRes, postsRes] = await Promise.all([
+          fetch('/api/auth/user-role'),
+          fetch('/api/blog')
+        ]);
+
+        // Handle user authentication and role
+        if (userRes.ok) {
+          const userData = await userRes.json();
+          setIsAuthenticated(userData.authenticated || false);
+          setUserRole(userData.role || 'free');
         } else {
           setIsAuthenticated(false);
+          setUserRole('free');
         }
-      } catch {
+
+        // Handle posts
+        if (postsRes.ok) {
+          const data = await postsRes.json();
+          if (data.posts) {
+            setPosts(data.posts);
+          }
+        }
+      } catch (error) {
+        console.error('Error fetching data:', error);
         setIsAuthenticated(false);
+        setUserRole('free');
+      } finally {
+        setIsLoading(false);
+        setIsAuthLoading(false);
       }
     };
-    checkAuth();
 
-    // Fetch blog posts
-    fetchPosts();
+    fetchAllData();
   }, []);
-
-  const fetchPosts = async () => {
-    try {
-      const response = await fetch('/api/blog');
-      const data = await response.json();
-      if (data.posts) {
-        setPosts(data.posts);
-      }
-    } catch (error) {
-      console.error('Error fetching posts:', error);
-    }
-  };
 
   const handleSearch = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -83,7 +85,8 @@ export default function CommunityPage() {
   const displayPosts = searchResults.length > 0 ? searchResults : posts;
   const featuredPost = displayPosts[0];
   const secondaryPosts = displayPosts.slice(1, 3);
-  const sidebarPosts = displayPosts.slice(3, 8);
+  // Fix recent posts logic - show all posts in sidebar for better visibility
+  const sidebarPosts = displayPosts; // Show all posts in sidebar
 
   const formatDate = (dateString: string | Date) => {
     const date = new Date(dateString);
@@ -100,6 +103,24 @@ export default function CommunityPage() {
     const colorIndex = title.length % colors.length;
     return `https://via.placeholder.com/400x200/${colors[colorIndex].slice(1)}/ffffff?text=${encodeURIComponent(title.slice(0, 20))}`;
   };
+
+  // Loading state
+  if (isLoading) {
+    return (
+      <div className="community-container">
+        <div className="community-content">
+          <div className="community-header">
+            <h1 className="community-title">Trading Community</h1>
+            <p className="community-subtitle">Share insights, learn strategies, and connect with fellow traders</p>
+            <div className="community-loading">
+              <div className="community-loading-spinner"></div>
+              <p>Loading community posts...</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="community-container">
@@ -130,14 +151,14 @@ export default function CommunityPage() {
             </div>
           </form>
 
-          {/* Create Post Button */}
-          {isAuthenticated && (userRole === 'premium' || userRole === 'admin') && (
+          {/* Create Post Button - Only show after auth is loaded */}
+          {!isAuthLoading && isAuthenticated && (userRole === 'premium' || userRole === 'admin') && (
             <Link href="/community/create" className="community-create-btn">
               Create New Post
             </Link>
           )}
 
-          {isAuthenticated && userRole === 'free' && (
+          {!isAuthLoading && isAuthenticated && userRole === 'free' && (
             <div className="community-upgrade-notice">
               <p>Upgrade to Premium to create posts and share your insights!</p>
             </div>
@@ -251,12 +272,12 @@ export default function CommunityPage() {
                     : 'Be the first to share your trading insights!'
                   }
                 </p>
-                {isAuthenticated && (userRole === 'premium' || userRole === 'admin') && (
+                {!isAuthLoading && isAuthenticated && (userRole === 'premium' || userRole === 'admin') && (
                   <Link href="/community/create" className="community-create-btn">
                     Create First Post
                   </Link>
                 )}
-                {isAuthenticated && userRole === 'free' && (
+                {!isAuthLoading && isAuthenticated && userRole === 'free' && (
                   <div className="community-upgrade-notice">
                     <p>Upgrade to Premium to create the first post!</p>
                   </div>
@@ -270,31 +291,35 @@ export default function CommunityPage() {
             <div className="community-sidebar-section">
               <h3 className="community-sidebar-title">Recent Posts</h3>
               <div className="community-sidebar-posts">
-                {sidebarPosts.map((post) => (
-                  <div key={post._id.toString()} className="community-sidebar-post">
-                    <div className="community-sidebar-image">
-                      <img 
-                        src={post.thumbnail || getDefaultThumbnail(post.title)} 
-                        alt={post.title}
-                        className="community-sidebar-img"
-                      />
-                    </div>
-                    <div className="community-sidebar-content">
-                      <h4 className="community-sidebar-post-title">{post.title}</h4>
-                      <div className="community-sidebar-meta">
-                        <span className="community-author">{post.author}</span>
-                        <span className="community-date">{formatDate(post.createdAt)}</span>
+                {sidebarPosts.length > 0 ? (
+                  sidebarPosts.map((post) => (
+                    <div key={post._id.toString()} className="community-sidebar-post">
+                      <div className="community-sidebar-image">
+                        <img 
+                          src={post.thumbnail || getDefaultThumbnail(post.title)} 
+                          alt={post.title}
+                          className="community-sidebar-img"
+                        />
                       </div>
-                      <Link href={`/community/post/${post._id.toString()}`} className="community-sidebar-link">
-                        Read More
-                      </Link>
+                      <div className="community-sidebar-content">
+                        <h4 className="community-sidebar-post-title">{post.title}</h4>
+                        <div className="community-sidebar-meta">
+                          <span className="community-author">{post.author}</span>
+                          <span className="community-date">{formatDate(post.createdAt)}</span>
+                        </div>
+                        <Link href={`/community/post/${post._id.toString()}`} className="community-sidebar-link">
+                          Read More
+                        </Link>
+                      </div>
                     </div>
-                  </div>
-                ))}
+                  ))
+                ) : (
+                  <p className="community-sidebar-empty">No additional posts to show</p>
+                )}
               </div>
             </div>
 
-            {!isAuthenticated && (
+            {!isAuthLoading && !isAuthenticated && (
               <div className="community-sidebar-section">
                 <h3 className="community-sidebar-title">Join the Community</h3>
                 <p className="community-sidebar-text">
@@ -306,7 +331,7 @@ export default function CommunityPage() {
               </div>
             )}
 
-            {isAuthenticated && userRole === 'free' && (
+            {!isAuthLoading && isAuthenticated && userRole === 'free' && (
               <div className="community-sidebar-section">
                 <h3 className="community-sidebar-title">Upgrade to Premium</h3>
                 <p className="community-sidebar-text">
