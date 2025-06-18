@@ -2,6 +2,41 @@
 @tailwind components;
 @tailwind utilities;
 
+@font-face {
+  font-family: 'open sans condensed';
+  src: url('/fonts/OpenSans_Condensed/OpenSans_Condensed-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'open sans';
+  src: url('/fonts/OpenSans/OpenSans-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Space Mono';
+  src: url('/fonts/SpaceMono/SpaceMono-Bold.ttf') format('truetype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Space Mono';
+  src: url('/fonts/SpaceMono/SpaceMono-Italic.ttf') format('truetype');
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Space Mono';
+  src: url('/fonts/SpaceMono/SpaceMono-BoldItalic.ttf') format('truetype');
+  font-weight: 700;
+  font-style: italic;
+  font-display: swap;
+}
 .mobile-only {
   display: block;
 }
@@ -72,6 +107,7 @@ body {
 }
 
 .nav {
+    font-family: 'open sans', monospace;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -82,7 +118,8 @@ body {
 .logo {
     font-size: 1.5rem;
     font-weight: 700;
-    background: linear-gradient(45deg, #00ffcc, #0080ff);
+    font-family: 'Space Mono', monospace;
+    background: linear-gradient(45deg, #feffff, #0057a8c4);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -132,6 +169,7 @@ body {
 .sign-in-btn {
     background: linear-gradient(45deg, #00ffcc, #0080ff);
     color: #000;
+    font-family: 'open sans', monospace;
     padding: 0.75rem 1.5rem;
     border: none;
     border-radius: 12px;
@@ -160,24 +198,24 @@ body {
     font-weight: 800;
     
     margin-bottom: 2rem;
-    background: linear-gradient(45deg, #ffffff, #00ffcc);
+    background: linear-gradient(45deg, #ffffff, #02fcda);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
     text-align: center;
-    animation: glow 2s ease-in-out infinite alternate;
+    
 }
 .events-title {
    font-size: 3rem;
     font-weight: 800;
-    margin-top: 1rem;
-    margin-bottom: 1rem;
+    margin-top: 3rem;
+    margin-bottom: 2rem;
     background: linear-gradient(45deg, #ffffff, #00ffcc);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
     text-align: center;
-    animation: glow 2s ease-in-out infinite alternate;
+    
 }
 .strategies-title {
     font-size: 3rem;
@@ -189,20 +227,11 @@ body {
     -webkit-text-fill-color: transparent;
     background-clip: text;
     text-align: center;
-    animation: glow 2s ease-in-out infinite alternate;
-}
-.strategies-title:hover {
-  
-    animation: glow 5s ease-in-out infinite alternate;
-    
-}
-@keyframes glow {
-    from { text-shadow: 0 0 20px rgba(0, 255, 204, 0.5); }
-    to { text-shadow: 0 0 30px rgba(0, 255, 204, 0.8); }
 }
 
+
 .strategies-title {
-    margin-top: 1rem;
+    margin-top: 3rem;
     margin-bottom: 1rem;
 }
 
@@ -827,23 +856,7 @@ body {
   transform: scale(1.04);
 }
 
-.footer-title {
-  font-size: 0.8rem;
-  font-weight: 600;
-  
-  margin-top: 1rem;
-  text-align: center;
-}
 
-.footer-text{  
-  font-size: 0.6rem;
-  font-weight: 400;
-  margin-bottom: 0.5rem;
-  margin-left: 1rem;
-  margin-right: 1rem;
-  margin-top: 0.2rem;
-  text-align: center;
-}
 
 /* Max Pain Strategy Styles */
 .max-pain-container {
@@ -1616,6 +1629,7 @@ body {
 
 .blog-content-buttons {
   display: flex;
+  font-family: 'open sans', monospace;
   gap: 0.5rem;
 }
 
@@ -2847,4 +2861,24 @@ body {
 .stat-card-dashboard.news:hover {
   transform: translateY(-2px);
   box-shadow: 0 8px 25px rgba(0, 255, 204, 0.15);
+}
+
+
+.footer-title {
+  font-size: 0.8rem;
+  font-weight: 600;
+  font-family: 'open sans condensed', monospace;
+  margin-top: 1rem;
+  text-align: center;
+}
+
+.footer-text{  
+  font-size: 0.65rem;
+  font-weight: 400;
+  font-family: 'open sans condensed', monospace;
+  margin-bottom: 0.5rem;
+  margin-left: 1rem;
+  margin-right: 1rem;
+  margin-top: 0.2rem;
+  text-align: center;
 }

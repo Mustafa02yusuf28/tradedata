@@ -8,7 +8,7 @@ import Footer from "@/components/layout/Footer";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Modern Trading Platform",
+  title: "Quantix",
   description: "Professional trading dashboard with real-time analytics",
 };
 
