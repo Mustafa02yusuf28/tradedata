@@ -177,6 +177,8 @@ body {
     cursor: pointer;
     transition: all 0.3s ease;
     box-shadow: 0 4px 15px rgba(0, 255, 204, 0.3);
+    text-decoration: none;
+    border-bottom: none;
 }
 
 .sign-in-btn:hover {
@@ -317,19 +319,7 @@ body {
 }
 
 .stat-card-dashboard::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 2px;
-    background: linear-gradient(90deg, #00ffcc, #0080ff, #d9ff00);
-    transform: scaleX(0);
-    transition: transform 0.3s ease;
-}
-
-.stat-card-dashboard:hover::before {
-    transform: scaleX(1);
+    content: none !important;
 }
 
 .stat-card-dashboard:hover {
