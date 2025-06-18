@@ -145,11 +145,11 @@ export default function CommunityPage() {
           <meta property="og:title" content={pageTitle} />
           <meta property="og:description" content={pageDescription} />
           <meta property="og:type" content="website" />
-          <meta property="og:url" content="https://quantix-trading.com/community" />
+          <meta property="og:url" content="https://fluxtrade.vercel.app/community" />
           <meta name="twitter:card" content="summary_large_image" />
           <meta name="twitter:title" content={pageTitle} />
           <meta name="twitter:description" content={pageDescription} />
-          <link rel="canonical" href="https://quantix-trading.com/community" />
+          <link rel="canonical" href="https://fluxtrade.vercel.app/community" />
         </Head>
         <div className="community-container">
           <div className="community-content">
@@ -176,11 +176,11 @@ export default function CommunityPage() {
         <meta property="og:title" content={pageTitle} />
         <meta property="og:description" content={pageDescription} />
         <meta property="og:type" content="website" />
-        <meta property="og:url" content="https://quantix-trading.com/community" />
+        <meta property="og:url" content="https://fluxtrade.vercel.app/community" />
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content={pageTitle} />
         <meta name="twitter:description" content={pageDescription} />
-        <link rel="canonical" href="https://quantix-trading.com/community" />
+        <link rel="canonical" href="https://fluxtrade.vercel.app/community" />
         
         {/* Structured Data for Community Page */}
         <script
@@ -191,7 +191,7 @@ export default function CommunityPage() {
               "@type": "WebPage",
               "name": "Trading Community",
               "description": pageDescription,
-              "url": "https://quantix-trading.com/community",
+              "url": "https://fluxtrade.vercel.app/community",
               "mainEntity": {
                 "@type": "ItemList",
                 "numberOfItems": displayPosts.length,
@@ -202,7 +202,7 @@ export default function CommunityPage() {
                     "@type": "Article",
                     "name": post.title,
                     "description": post.description,
-                    "url": `https://quantix-trading.com/community/post/${post._id.toString()}`,
+                    "url": `https://fluxtrade.vercel.app/community/post/${post._id.toString()}`,
                     "author": {
                       "@type": "Person",
                       "name": post.author

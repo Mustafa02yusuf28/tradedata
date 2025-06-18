@@ -205,13 +205,13 @@ export default function BlogPostPage() {
   const isAllowed = !isPremium || userRole === 'premium' || userRole === 'admin';
 
   // SEO metadata
-  const pageTitle = post ? `${post.title} - Trading Insights` : 'Blog Post - Quantix Trading';
+  const pageTitle = post ? `${post.title} - Trading Insights` : 'Blog Post - Fluxtrade Trading';
   const pageDescription = post ? post.description : 'Read expert trading insights and market analysis from our community.';
   const pageKeywords = post && post.keywords && post.keywords.length > 0
     ? post.keywords.join(', ') + ', ' + DEFAULT_TRENDING_KEYWORDS.join(', ')
     : DEFAULT_TRENDING_KEYWORDS.join(', ');
-  const pageUrl = post ? `https://quantix-trading.com/community/post/${post._id.toString()}` : 'https://quantix-trading.com/community';
-  const pageImage = post?.thumbnail || 'https://quantix-trading.com/og-image.jpg';
+  const pageUrl = post ? `https://fluxtrade.vercel.app/community/post/${post._id.toString()}` : 'https://fluxtrade.vercel.app/community';
+  const pageImage = post?.thumbnail || 'https://fluxtrade.vercel.app/og-image.jpg';
 
   // Helper function to safely convert dates to ISO string
   const toISOString = (date: string | Date) => {
@@ -227,7 +227,7 @@ export default function BlogPostPage() {
     return (
       <>
         <Head>
-          <title>Loading... | Quantix Trading</title>
+          <title>Loading... | Fluxtrade Trading</title>
           <meta name="description" content="Loading blog post..." />
         </Head>
         <div className="blog-post-container">
@@ -247,7 +247,7 @@ export default function BlogPostPage() {
       return (
         <>
           <Head>
-            <title>Premium Content - Quantix Trading</title>
+            <title>Premium Content - Fluxtrade Trading</title>
             <meta name="description" content="This content is available for premium members only." />
             <meta name="robots" content="noindex, nofollow" />
           </Head>
@@ -268,7 +268,7 @@ export default function BlogPostPage() {
     return (
       <>
         <Head>
-          <title>Post Not Found - Quantix Trading</title>
+          <title>Post Not Found - Fluxtrade Trading</title>
           <meta name="description" content="The requested blog post could not be found." />
           <meta name="robots" content="noindex, nofollow" />
         </Head>
@@ -323,10 +323,10 @@ export default function BlogPostPage() {
               },
               "publisher": {
                 "@type": "Organization",
-                "name": "Quantix Trading",
+                "name": "Fluxtrade Trading",
                 "logo": {
                   "@type": "ImageObject",
-                  "url": "https://quantix-trading.com/logo.png"
+                  "url": "https://fluxtrade.vercel.app/logo.png"
                 }
               },
               "datePublished": toISOString(post.createdAt),

@@ -1,64 +1,54 @@
 import './globals.css';
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
-import Header from "./components/Header";
-import BackgroundParticles from "./components/BackgroundParticles";
+// import Header from "./components/Header";
+import Header from "../components/layout/Header";
+import BackgroundParticles from "../components/BackgroundParticles";
 import Footer from "@/components/layout/Footer";
 
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: {
-    default: "Quantix - Professional Trading Dashboard & Analytics",
-    template: "%s | Quantix Trading"
+    default: "Fluxtrade - Professional Trading Dashboard & Analytics",
+    template: "%s | Fluxtrade Trading"
   },
-  description: "Professional trading dashboard with real-time analytics, market insights, trading strategies, and community-driven content. Access advanced trading tools, portfolio tracking, and expert analysis.",
-  keywords: [
-    "trading dashboard",
-    "stock market analysis",
-    "portfolio tracking",
-    "trading strategies",
-    "market analytics",
-    "financial tools",
-    "investment platform",
-    "trading community",
-    "market insights",
-    "trading education"
-  ],
-  authors: [{ name: "Quantix Team" }],
-  creator: "Quantix",
-  publisher: "Quantix",
+  description: "Advanced trading dashboard with real-time market data, strategies, and analytics for professional traders and investors.",
+  keywords: ["trading", "dashboard", "analytics", "market data", "trading strategies", "investment", "finance"],
+  authors: [{ name: "Fluxtrade Team" }],
+  creator: "Fluxtrade",
+  publisher: "Fluxtrade",
   formatDetection: {
     email: false,
     address: false,
     telephone: false,
   },
-  metadataBase: new URL('https://quantix-trading.com'), // Replace with your actual domain
+  metadataBase: new URL('https://fluxtrade.vercel.app'), // Replace with your actual domain
   alternates: {
     canonical: '/',
   },
   openGraph: {
     type: 'website',
     locale: 'en_US',
-    url: 'https://quantix-trading.com',
-    title: 'Quantix - Professional Trading Dashboard & Analytics',
-    description: 'Professional trading dashboard with real-time analytics, market insights, trading strategies, and community-driven content.',
-    siteName: 'Quantix Trading',
+    url: 'https://fluxtrade.vercel.app',
+    title: 'Fluxtrade - Professional Trading Dashboard & Analytics',
+    description: 'Advanced trading dashboard with real-time market data, strategies, and analytics for professional traders and investors.',
+    siteName: 'Fluxtrade Trading',
     images: [
       {
-        url: '/og-image.jpg', // You'll need to create this image
+        url: '/og-image.jpg',
         width: 1200,
         height: 630,
-        alt: 'Quantix Trading Dashboard',
+        alt: 'Fluxtrade Trading Dashboard',
       },
     ],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Quantix - Professional Trading Dashboard & Analytics',
-    description: 'Professional trading dashboard with real-time analytics, market insights, trading strategies, and community-driven content.',
-    images: ['/og-image.jpg'], // Same image as Open Graph
-    creator: '@quantix_trading', // Replace with your Twitter handle
+    title: 'Fluxtrade - Professional Trading Dashboard & Analytics',
+    description: 'Advanced trading dashboard with real-time market data, strategies, and analytics for professional traders and investors.',
+    creator: '@fluxtrade_trading', // Replace with your Twitter handle
+    images: ['/og-image.jpg'],
   },
   robots: {
     index: true,
