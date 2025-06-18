@@ -107,7 +107,7 @@ body {
 }
 
 .nav {
-    font-family: 'open sans', monospace;
+    font-family: 'Space Mono';
     display: flex;
     justify-content: space-between;
     align-items: center;
