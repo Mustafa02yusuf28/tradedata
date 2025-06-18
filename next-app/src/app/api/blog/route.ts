@@ -62,6 +62,13 @@ export async function POST(request: NextRequest) {
     const contentString = formData.get('content') as string;
     const thumbnail = formData.get('thumbnail') as string;
     const thumbnailFile = formData.get('thumbnailFile') as File;
+    const visibility = ((formData.get('visibility') as string) || 'public') as 'public' | 'premium';
+    // Optional keywords for SEO
+    let keywords: string[] | undefined = undefined;
+    const keywordsRaw = formData.get('keywords');
+    if (keywordsRaw && typeof keywordsRaw === 'string') {
+      keywords = keywordsRaw.split(',').map(k => k.trim()).filter(Boolean);
+    }
 
     // Parse content JSON string
     let content;
@@ -111,6 +118,8 @@ export async function POST(request: NextRequest) {
       author: (payload.name as string) || (payload.email as string) || 'Anonymous',
       authorId: (payload.email as string) || 'anonymous',
       thumbnail: thumbnailUrl,
+      visibility,
+      keywords,
     };
 
     const result = await createBlogPost(blogData);

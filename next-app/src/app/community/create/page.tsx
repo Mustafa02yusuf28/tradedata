@@ -24,6 +24,8 @@ export default function CreateBlogPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState('');
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [visibility, setVisibility] = useState<'public' | 'premium'>('public');
+  const [keywords, setKeywords] = useState('');
 
   useEffect(() => {
     // Check authentication status
@@ -166,7 +168,12 @@ export default function CreateBlogPage() {
       formData.append('title', title.trim());
       formData.append('description', description.trim());
       formData.append('content', JSON.stringify(content.filter(item => item.content.trim())));
+      formData.append('visibility', visibility);
       
+      if (keywords.trim()) {
+        formData.append('keywords', keywords);
+      }
+
       if (thumbnailFile) {
         formData.append('thumbnailFile', thumbnailFile);
       } else if (thumbnail.trim()) {
@@ -312,6 +319,20 @@ export default function CreateBlogPage() {
             />
           </div>
 
+          {/* SEO Keywords */}
+          <div className="blog-form-group">
+            <label htmlFor="keywords" className="blog-form-label">SEO Keywords (optional)</label>
+            <input
+              type="text"
+              id="keywords"
+              value={keywords}
+              onChange={(e) => setKeywords(e.target.value)}
+              placeholder="Comma-separated keywords for SEO (e.g. trading, options, stocks)"
+              className="blog-form-input"
+            />
+            <small style={{ color: '#b5eaea' }}>Separate keywords with commas. These will be used for search engine optimization.</small>
+          </div>
+
           {/* Thumbnail */}
           <div className="blog-form-group">
             <ImageUpload
@@ -322,6 +343,20 @@ export default function CreateBlogPage() {
               placeholder="Enter thumbnail image URL or upload a file..."
               label="Thumbnail Image (Optional)"
             />
+          </div>
+
+          {/* Visibility Selector */}
+          <div className="blog-form-group">
+            <label htmlFor="visibility" className="blog-form-label">Visibility</label>
+            <select
+              id="visibility"
+              value={visibility}
+              onChange={e => setVisibility(e.target.value as 'public' | 'premium')}
+              className="blog-form-input"
+            >
+              <option value="public">Public (Everyone can read)</option>
+              <option value="premium">Premium (Premium users only)</option>
+            </select>
           </div>
 
           {/* Content */}

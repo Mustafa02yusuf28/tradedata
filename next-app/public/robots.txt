@@ -1,0 +1,36 @@
+User-agent: *
+Allow: /
+
+# Sitemap location
+Sitemap: https://quantix-trading.com/sitemap.xml
+
+# Crawl delay (optional - be respectful to server resources)
+Crawl-delay: 1
+
+# Disallow admin and private areas
+Disallow: /api/
+Disallow: /admin/
+Disallow: /private/
+Disallow: /_next/
+Disallow: /login
+Disallow: /register
+
+# Allow important pages
+Allow: /community/
+Allow: /news/
+Allow: /strategies/
+Allow: /events/
+Allow: /dashboard
+
+# Specific rules for different bots
+User-agent: Googlebot
+Allow: /
+Crawl-delay: 1
+
+User-agent: Bingbot
+Allow: /
+Crawl-delay: 1
+
+User-agent: Slurp
+Allow: /
+Crawl-delay: 2 

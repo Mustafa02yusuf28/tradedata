@@ -88,7 +88,6 @@ export default function Header() {
             <Link 
               href="/community" 
               className={`nav-link ${pathname === '/community' ? 'active' : ''}`}
-              onClick={handleProtectedRouteClick}
             >
               Community
             </Link>

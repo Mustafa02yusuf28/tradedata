@@ -24,6 +24,8 @@ export default function EditBlogPostPage() {
   const [content, setContent] = useState<BlogContent[]>([]);
   const [thumbnail, setThumbnail] = useState('');
   const [thumbnailFile, setThumbnailFile] = useState<File | null>(null);
+  const [visibility, setVisibility] = useState<'public' | 'premium'>('public');
+  const [keywords, setKeywords] = useState('');
 
   useEffect(() => {
     // Check authentication status and user role
@@ -69,6 +71,10 @@ export default function EditBlogPostPage() {
         setDescription(fetchedPost.description);
         setContent(fetchedPost.content);
         setThumbnail(fetchedPost.thumbnail || '');
+        setVisibility(fetchedPost.visibility || 'public');
+        if (fetchedPost.keywords && Array.isArray(fetchedPost.keywords)) {
+          setKeywords(fetchedPost.keywords.join(', '));
+        }
       } catch (err) {
         setError(err instanceof Error ? err.message : 'Failed to load post');
       } finally {
@@ -109,11 +115,16 @@ export default function EditBlogPostPage() {
       formData.append('content', JSON.stringify(content));
       formData.append('author', post!.author);
       formData.append('authorId', post!.authorId);
+      formData.append('visibility', visibility);
       
       if (thumbnailFile) {
         formData.append('thumbnailFile', thumbnailFile);
       } else if (thumbnail) {
         formData.append('thumbnail', thumbnail);
+      }
+
+      if (keywords.trim()) {
+        formData.append('keywords', keywords);
       }
 
       const response = await fetch(`/api/blog/${params.id}`, {
@@ -251,6 +262,19 @@ export default function EditBlogPostPage() {
               required
             />
           </div>
+          {/* SEO Keywords */}
+          <div className="blog-form-group">
+            <label htmlFor="keywords" className="blog-form-label">SEO Keywords (optional)</label>
+            <input
+              type="text"
+              id="keywords"
+              value={keywords}
+              onChange={(e) => setKeywords(e.target.value)}
+              placeholder="Comma-separated keywords for SEO (e.g. trading, options, stocks)"
+              className="blog-form-input"
+            />
+            <small style={{ color: '#b5eaea' }}>Separate keywords with commas. These will be used for search engine optimization.</small>
+          </div>
           {/* Thumbnail */}
           <div className="blog-form-group">
             <ImageUpload
@@ -261,6 +285,19 @@ export default function EditBlogPostPage() {
               placeholder="Enter thumbnail image URL or upload a file..."
               label="Thumbnail Image (Optional)"
             />
+          </div>
+          {/* Visibility Selector */}
+          <div className="blog-form-group">
+            <label htmlFor="visibility" className="blog-form-label">Visibility</label>
+            <select
+              id="visibility"
+              value={visibility}
+              onChange={e => setVisibility(e.target.value as 'public' | 'premium')}
+              className="blog-form-input"
+            >
+              <option value="public">Public (Everyone can read)</option>
+              <option value="premium">Premium (Premium users only)</option>
+            </select>
           </div>
           {/* Content */}
           <div className="blog-form-group">

@@ -13,6 +13,8 @@ export interface BlogPost extends Document {
   createdAt: Date;
   updatedAt: Date;
   isPublished: boolean;
+  visibility: 'public' | 'premium';
+  keywords?: string[];
 }
 
 export interface BlogContent {
@@ -39,6 +41,8 @@ export interface CreateBlogPostData {
   authorId: string;
   thumbnail?: string;
   thumbnailFile?: File;
+  visibility?: 'public' | 'premium';
+  keywords?: string[];
 }
 
 export async function getBlogPosts(): Promise<{ posts?: BlogPost[], error?: string }> {
@@ -94,6 +98,7 @@ export async function createBlogPost(data: CreateBlogPostData): Promise<{ post?:
 
     const newPost = {
       ...data,
+      visibility: data.visibility || 'public',
       createdAt: new Date(),
       updatedAt: new Date(),
       isPublished: true,
