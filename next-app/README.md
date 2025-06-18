@@ -1,12 +1,12 @@
-# Quantix Trading Platform — Overview
+# Fluxtrade Trading Platform — Overview
 
-**Quantix** is a next-generation, all-in-one trading and analytics platform designed for modern traders, investors, and financial communities. Built for 2025 and beyond, Quantix combines professional-grade trading tools, real-time analytics, community-driven insights, and advanced SEO-optimized content to empower users at every level.
+**Fluxtrade** is a next-generation, all-in-one trading and analytics platform designed for modern traders, investors, and financial communities. Built for 2025 and beyond, Fluxtrade combines professional-grade trading tools, real-time analytics, community-driven insights, and advanced SEO-optimized content to empower users at every level.
 
 ---
 
-## 🌟 What is Quantix?
+## 🌟 What is Fluxtrade?
 
-Quantix is more than just a blog or dashboard—it's a comprehensive ecosystem for anyone serious about trading, investing, and staying ahead in global financial markets. Whether you're a retail trader, institutional investor, or financial content creator, Quantix provides the tools, data, and community you need to succeed.
+Fluxtrade is more than just a blog or dashboard—it's a comprehensive ecosystem for anyone serious about trading, investing, and staying ahead in global financial markets. Whether you're a retail trader, institutional investor, or financial content creator, Fluxtrade provides the tools, data, and community you need to succeed.
 
 ---
 
@@ -64,7 +64,7 @@ Quantix is more than just a blog or dashboard—it's a comprehensive ecosystem f
 
 ## 🚀 **Vision & Value**
 
-Quantix aims to democratize access to professional trading tools, actionable insights, and a vibrant financial community. By combining cutting-edge analytics, real-time data, and community wisdom, Quantix empowers users to make smarter decisions, faster.
+Fluxtrade aims to democratize access to professional trading tools, actionable insights, and a vibrant financial community. By combining cutting-edge analytics, real-time data, and community wisdom, Fluxtrade empowers users to make smarter decisions, faster.
 
 ---
 
@@ -83,7 +83,7 @@ Quantix aims to democratize access to professional trading tools, actionable ins
 
 ---
 
-## 👥 **Who is Quantix For?**
+## 👥 **Who is Fluxtrade For?**
 
 - **Retail traders** seeking real-time data and actionable strategies
 - **Professional investors** needing advanced analytics and portfolio tools
@@ -92,7 +92,7 @@ Quantix aims to democratize access to professional trading tools, actionable ins
 
 ---
 
-## 💡 **Why Choose Quantix?**
+## 💡 **Why Choose Fluxtrade?**
 
 - All-in-one platform: analytics, news, strategies, and community
 - SEO-optimized content for maximum reach and discoverability
@@ -101,4 +101,4 @@ Quantix aims to democratize access to professional trading tools, actionable ins
 
 ---
 
-**Quantix Trading Platform** — Your edge in the markets, your voice in the community, your hub for financial growth.
+**Fluxtrade Trading Platform** — Your edge in the markets, your voice in the community, your hub for financial growth.
