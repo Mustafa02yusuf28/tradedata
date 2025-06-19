@@ -26,6 +26,7 @@ export default function CreateBlogPage() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [visibility, setVisibility] = useState<'public' | 'premium'>('public');
   const [keywords, setKeywords] = useState('');
+  const [uploadStatuses, setUploadStatuses] = useState<Record<number, 'idle' | 'uploading' | 'done' | 'error'>>({});
 
   useEffect(() => {
     // Check authentication status
@@ -144,6 +145,10 @@ export default function CreateBlogPage() {
     setContent(updatedContent);
   };
 
+  const handleUploadStatusChange = (index: number, status: 'idle' | 'uploading' | 'done' | 'error') => {
+    setUploadStatuses(prev => ({ ...prev, [index]: status }));
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
@@ -159,6 +164,16 @@ export default function CreateBlogPage() {
       return;
     }
 
+    // Add validation in handleSubmit
+    const hasInvalidImage = content.some(
+      item => item.type === 'image' && (!item.imageUrl || !item.imageUrl.trim())
+    );
+    if (hasInvalidImage) {
+      setError('Please upload all images or remove empty image blocks before submitting.');
+      setIsSubmitting(false);
+      return;
+    }
+
     setIsSubmitting(true);
     setError('');
 
@@ -167,7 +182,13 @@ export default function CreateBlogPage() {
       const formData = new FormData();
       formData.append('title', title.trim());
       formData.append('description', description.trim());
-      formData.append('content', JSON.stringify(content.filter(item => item.content.trim())));
+      formData.append('content', JSON.stringify(
+        content.filter(item =>
+          (item.type === 'paragraph' && item.content.trim()) ||
+          (item.type === 'image' && item.imageUrl && item.imageUrl.trim()) ||
+          (item.type === 'link' && item.content.trim())
+        )
+      ));
       formData.append('visibility', visibility);
       
       if (keywords.trim()) {
@@ -258,6 +279,7 @@ export default function CreateBlogPage() {
             onImageFileChange={(file) => updateImageFile(index, file)}
             placeholder="Enter image URL or upload a file..."
             label="Content Image"
+            onUploadStatusChange={(status) => handleUploadStatusChange(index, status)}
           />
         )}
         
@@ -273,6 +295,8 @@ export default function CreateBlogPage() {
       </div>
     );
   };
+
+  const anyImageUploading = Object.values(uploadStatuses).includes('uploading');
 
   if (!isAuthenticated) {
     return (
@@ -413,7 +437,7 @@ export default function CreateBlogPage() {
             <button
               type="submit"
               className="blog-submit-btn"
-              disabled={isSubmitting}
+              disabled={isSubmitting || anyImageUploading}
             >
               {isSubmitting ? 'Creating Post...' : 'Create Post'}
             </button>

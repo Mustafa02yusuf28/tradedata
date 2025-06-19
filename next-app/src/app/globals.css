@@ -3018,3 +3018,39 @@ body {
 .style1 span:nth-child(1) { top: 0px; }
 .style1 span:nth-child(2) { top: 8px; }
 .style1 span:nth-child(3) { top: 16px; }
+
+.blog-form-input, select.blog-form-input {
+  background: rgba(0, 0, 0, 0.25);
+  border: 1.5px solid rgba(217, 224, 223, 0.25);
+  color: #fff;
+  border-radius: 0.5rem;
+  padding: 0.75rem 1rem;
+  font-size: 1rem;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  box-shadow: 0 2px 8px rgba(0,255,204,0.04);
+  appearance: none;
+}
+
+select.blog-form-input {
+  background: linear-gradient(135deg, #0f0f23 0%, #1a1a2e 50%, #16213e 100%);
+  color: #00ffcc;
+  font-weight: 600;
+  cursor: pointer;
+  position: relative;
+}
+
+.blog-form-input:focus, select.blog-form-input:focus {
+  outline: none;
+  border-color: #00ffcc;
+  box-shadow: 0 0 0 3px rgba(0,255,204,0.15);
+}
+
+select.blog-form-input:hover {
+  border-color: #0080ff;
+  color: #0080ff;
+}
+
+select.blog-form-input option {
+  background: #1a1a2e;
+  color: #00ffcc;
+}

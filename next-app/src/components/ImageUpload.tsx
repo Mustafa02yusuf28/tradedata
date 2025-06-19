@@ -10,6 +10,7 @@ interface ImageUploadProps {
   placeholder?: string;
   label?: string;
   accept?: string;
+  onUploadStatusChange?: (status: 'idle' | 'uploading' | 'done' | 'error') => void;
 }
 
 export default function ImageUpload({
@@ -19,12 +20,14 @@ export default function ImageUpload({
   onImageFileChange,
   placeholder = "Enter image URL or upload a file...",
   label = "Image",
-  accept = "image/*"
+  accept = "image/*",
+  onUploadStatusChange
 }: ImageUploadProps) {
   const [uploadMode, setUploadMode] = useState<'url' | 'file'>('url');
   const [previewUrl, setPreviewUrl] = useState<string>('');
   const [isUploading, setIsUploading] = useState(false);
   const [uploadError, setUploadError] = useState('');
+  const [uploadProgress, setUploadProgress] = useState<number>(0);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -32,40 +35,43 @@ export default function ImageUpload({
     if (file && onImageFileChange) {
       setIsUploading(true);
       setUploadError('');
-
+      setUploadProgress(0);
+      if (onUploadStatusChange) onUploadStatusChange('uploading');
       try {
-        // Upload file to server
+        // Upload file to server with progress
         const formData = new FormData();
         formData.append('file', file);
-
-        const response = await fetch('/api/upload', {
-          method: 'POST',
-          body: formData,
-        });
-
-        const data = await response.json();
-
-        if (!response.ok) {
-          throw new Error(data.error || 'Upload failed');
-        }
-
-        // Update the image URL with the uploaded file URL
-        if (onImageUrlChange) {
-          onImageUrlChange(data.url);
-        }
-        setPreviewUrl(data.url);
-        
-        // Clear the file reference since we now have a URL
-        onImageFileChange(null);
-        
+        const xhr = new XMLHttpRequest();
+        xhr.open('POST', '/api/upload');
+        xhr.upload.onprogress = (event) => {
+          if (event.lengthComputable) {
+            setUploadProgress(Math.round((event.loaded / event.total) * 100));
+          }
+        };
+        xhr.onload = () => {
+          setIsUploading(false);
+          if (xhr.status === 200) {
+            const data = JSON.parse(xhr.responseText);
+            if (onImageUrlChange) onImageUrlChange(data.url);
+            setPreviewUrl(data.url);
+            if (onUploadStatusChange) onUploadStatusChange('done');
+            onImageFileChange(null);
+          } else {
+            setUploadError('Upload failed');
+            if (onUploadStatusChange) onUploadStatusChange('error');
+          }
+        };
+        xhr.onerror = () => {
+          setIsUploading(false);
+          setUploadError('Upload failed');
+          if (onUploadStatusChange) onUploadStatusChange('error');
+        };
+        xhr.send(formData);
       } catch (error) {
-        setUploadError(error instanceof Error ? error.message : 'Upload failed');
-        // Clear the file input
-        if (fileInputRef.current) {
-          fileInputRef.current.value = '';
-        }
-      } finally {
         setIsUploading(false);
+        setUploadError(error instanceof Error ? error.message : 'Upload failed');
+        if (onUploadStatusChange) onUploadStatusChange('error');
+        if (fileInputRef.current) fileInputRef.current.value = '';
       }
     }
   };
@@ -177,6 +183,14 @@ export default function ImageUpload({
           >
             ×
           </button>
+        </div>
+      )}
+
+      {/* Progress Bar */}
+      {isUploading && (
+        <div className="image-upload-progress">
+          <div className="image-upload-progress-bar" style={{ width: `${uploadProgress}%` }} />
+          <span className="image-upload-progress-text">{uploadProgress}%</span>
         </div>
       )}
 

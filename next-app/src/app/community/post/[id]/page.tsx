@@ -77,6 +77,19 @@ const DEFAULT_TRENDING_KEYWORDS = [
   'trading platform with real-time alerts', 'multi-screen trading dashboard setup', 'mobile trading app with advanced charts', 'commission-free trading platform', 'paper trading platform for practice',
 ];
 
+// Helper to convert newlines to <br> for paragraphs
+function formatParagraphContent(text: string) {
+  // Escape HTML to prevent XSS, then replace newlines with <br>
+  const escapeHtml = (unsafe: string) =>
+    unsafe
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/\"/g, "&quot;")
+      .replace(/'/g, "&#039;");
+  return escapeHtml(text).replace(/\n/g, '<br>');
+}
+
 export default function BlogPostPage() {
   const params = useParams();
   const router = useRouter();
@@ -171,7 +184,7 @@ export default function BlogPostPage() {
               )}
               <div 
                 className="blog-post-paragraph"
-                dangerouslySetInnerHTML={{ __html: item.content }}
+                dangerouslySetInnerHTML={{ __html: formatParagraphContent(item.content) }}
               />
             </div>
           );

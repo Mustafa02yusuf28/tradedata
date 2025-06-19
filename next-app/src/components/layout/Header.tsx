@@ -28,7 +28,7 @@ const Header = () => {
       }
     };
     checkAuth();
-  }, []);
+  }, [pathname]);
 
   const handleLogout = async () => {
     try {
