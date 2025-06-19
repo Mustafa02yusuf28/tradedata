@@ -1,6 +1,6 @@
 {
-  "name": "Quantix Trading Dashboard",
-  "short_name": "Quantix",
+  "name": "Fluxtrade Trading Dashboard",
+  "short_name": "Fluxtrade",
   "description": "Professional trading dashboard with real-time analytics, market insights, and trading strategies",
   "start_url": "/",
   "display": "standalone",
