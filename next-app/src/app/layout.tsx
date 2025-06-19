@@ -23,7 +23,7 @@ export const metadata: Metadata = {
     address: false,
     telephone: false,
   },
-  metadataBase: new URL('https://fluxtrade.vercel.app'), // Replace with your actual domain
+  metadataBase: new URL('https://fluxtrade.vercel.app'), // Use the correct canonical domain
   alternates: {
     canonical: '/',
   },

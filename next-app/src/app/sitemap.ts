@@ -2,7 +2,7 @@ import { MetadataRoute } from 'next';
 import { getBlogPosts, BlogPost } from '@/lib/blog';
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const baseUrl = 'https://quantix-trading.com'; // Replace with your actual domain
+  const baseUrl = 'https://fluxtrade.vercel.app'; // Use the correct canonical domain
 
   // Static pages
   const staticPages = [
