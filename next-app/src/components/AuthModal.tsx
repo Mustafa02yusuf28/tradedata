@@ -53,9 +53,8 @@ export default function AuthModal({ isOpen, onClose, onSuccess }: AuthModalProps
       // Show success notification
       setShowSuccess(true);
       
-      // Close modal and trigger success callback after a short delay
+      // Trigger success callback after a short delay, but don't call onClose
       setTimeout(() => {
-        onClose();
         if (onSuccess) {
           onSuccess();
         }
