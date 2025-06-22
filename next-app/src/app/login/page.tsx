@@ -9,11 +9,17 @@ function LoginPageContent() {
   const searchParams = useSearchParams();
   const redirect = searchParams.get("redirect");
 
+  const handleClose = () => {
+    setIsOpen(false);
+    // Redirect to dashboard when modal is closed without signing in
+    router.push("/dashboard");
+  };
+
   return (
     <>
       <AuthModal
         isOpen={isOpen}
-        onClose={() => setIsOpen(false)}
+        onClose={handleClose}
         onSuccess={() => {
           if (redirect) {
             router.push(redirect);
@@ -22,17 +28,6 @@ function LoginPageContent() {
           }
         }}
       />
-      {!isOpen && (
-        <div className="text-center mt-10 text-white/80">
-          Please sign in to continue.<br />
-          <button
-            className="auth-modal-btn mt-4"
-            onClick={() => setIsOpen(true)}
-          >
-            Open Sign In Modal
-          </button>
-        </div>
-      )}
     </>
   );
 }
