@@ -43,6 +43,7 @@ export interface CreateBlogPostData {
   thumbnailFile?: File;
   visibility?: 'public' | 'premium';
   keywords?: string[];
+  isPublished?: boolean;
 }
 
 export async function getBlogPosts(): Promise<{ posts?: BlogPost[], error?: string }> {
@@ -78,7 +79,7 @@ export async function getBlogPostById(id: string): Promise<{ post?: BlogPost, er
 
     const post = await db
       .collection<BlogPost>('content')
-      .findOne({ _id: objectId, isPublished: true });
+      .findOne({ _id: objectId });
 
     if (!post) {
       return { error: 'Blog post not found.' };
@@ -101,7 +102,7 @@ export async function createBlogPost(data: CreateBlogPostData): Promise<{ post?:
       visibility: data.visibility || 'public',
       createdAt: new Date(),
       updatedAt: new Date(),
-      isPublished: true,
+      isPublished: typeof data.isPublished === 'boolean' ? data.isPublished : true,
     };
 
     const result = await db

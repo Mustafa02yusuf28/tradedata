@@ -1,10 +1,11 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import { BlogContent } from '@/lib/blog';
 import RichTextEditor from '@/components/RichTextEditor';
 import ImageUpload from '@/components/ImageUpload';
+import Link from 'next/link';
 
 export default function CreateBlogPage() {
   const router = useRouter();
@@ -27,6 +28,8 @@ export default function CreateBlogPage() {
   const [visibility, setVisibility] = useState<'public' | 'premium'>('public');
   const [keywords, setKeywords] = useState('');
   const [uploadStatuses, setUploadStatuses] = useState<Record<number, 'idle' | 'uploading' | 'done' | 'error'>>({});
+  const [draftSaved, setDraftSaved] = useState(false);
+  const autoSaveTimeout = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
     // Check authentication status
@@ -44,6 +47,42 @@ export default function CreateBlogPage() {
     };
     checkAuth();
   }, [router]);
+
+  // Auto-save to localStorage on every change
+  useEffect(() => {
+    const draft = {
+      title,
+      description,
+      content,
+      thumbnail,
+      visibility,
+      keywords,
+    };
+    // Debounce to avoid excessive writes
+    if (autoSaveTimeout.current) clearTimeout(autoSaveTimeout.current);
+    autoSaveTimeout.current = setTimeout(() => {
+      localStorage.setItem('blog-draft', JSON.stringify(draft));
+    }, 500);
+    return () => {
+      if (autoSaveTimeout.current) clearTimeout(autoSaveTimeout.current);
+    };
+  }, [title, description, content, thumbnail, visibility, keywords]);
+
+  // Restore from localStorage on load
+  useEffect(() => {
+    const saved = localStorage.getItem('blog-draft');
+    if (saved) {
+      try {
+        const draft = JSON.parse(saved);
+        if (draft.title) setTitle(draft.title);
+        if (draft.description) setDescription(draft.description);
+        if (draft.content) setContent(draft.content);
+        if (draft.thumbnail) setThumbnail(draft.thumbnail);
+        if (draft.visibility) setVisibility(draft.visibility);
+        if (draft.keywords) setKeywords(draft.keywords);
+      } catch {}
+    }
+  }, []);
 
   const addParagraph = () => {
     const newOrder = content.length;
@@ -149,6 +188,38 @@ export default function CreateBlogPage() {
     setUploadStatuses(prev => ({ ...prev, [index]: status }));
   };
 
+  // Save Draft to server
+  const handleSaveDraft = async () => {
+    setDraftSaved(false);
+    setIsSubmitting(true);
+    setError('');
+    try {
+      const formData = new FormData();
+      formData.append('title', title.trim());
+      formData.append('description', description.trim());
+      formData.append('content', JSON.stringify(content));
+      formData.append('visibility', visibility);
+      if (keywords.trim()) formData.append('keywords', keywords);
+      if (thumbnailFile) {
+        formData.append('thumbnailFile', thumbnailFile);
+      } else if (thumbnail.trim()) {
+        formData.append('thumbnail', thumbnail.trim());
+      }
+      formData.append('isDraft', 'true');
+      const response = await fetch('/api/blog', {
+        method: 'POST',
+        body: formData,
+      });
+      const data = await response.json();
+      if (!response.ok) throw new Error(data.error || 'Failed to save draft');
+      setDraftSaved(true);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to save draft');
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
@@ -213,6 +284,7 @@ export default function CreateBlogPage() {
       }
 
       // Redirect to the created post
+      localStorage.removeItem('blog-draft');
       router.push(`/community/post/${data.post._id}`);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to create post');
@@ -311,6 +383,11 @@ export default function CreateBlogPage() {
       <div className="blog-create-content">
         <div className="blog-create-header">
           <h1 className="blog-create-title">Create New Blog Post</h1>
+          <div style={{ margin: '18px 0 18px 0', display: 'flex', justifyContent: 'center' }}>
+            <Link href="/community/drafts" className="blog-content-btn neon-btn">
+              My Drafts
+            </Link>
+          </div>
           <p className="blog-create-subtitle">Share your trading insights with the community</p>
         </div>
 
@@ -435,6 +512,14 @@ export default function CreateBlogPage() {
               Cancel
             </button>
             <button
+              type="button"
+              className="blog-submit-btn"
+              disabled={isSubmitting || anyImageUploading}
+              onClick={handleSaveDraft}
+            >
+              {isSubmitting ? 'Saving Draft...' : 'Save Draft'}
+            </button>
+            <button
               type="submit"
               className="blog-submit-btn"
               disabled={isSubmitting || anyImageUploading}
@@ -442,6 +527,11 @@ export default function CreateBlogPage() {
               {isSubmitting ? 'Creating Post...' : 'Create Post'}
             </button>
           </div>
+          {draftSaved && (
+            <div className="blog-success" style={{ color: '#00ffcc', marginTop: 8 }}>
+              Draft saved!
+            </div>
+          )}
         </form>
       </div>
     </div>

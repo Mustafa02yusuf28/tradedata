@@ -1631,6 +1631,8 @@ body {
   cursor: pointer;
   font-size: 0.9rem;
   transition: all 0.3s ease;
+  text-decoration: none;
+  text-underline-offset: 0;
 }
 
 .blog-content-btn:hover {
@@ -3052,4 +3054,41 @@ select.blog-form-input:hover {
 select.blog-form-input option {
   background: #1a1a2e;
   color: #00ffcc;
+}
+
+/* Neon button styles for drafts page and other neon actions */
+.neon-btn {
+  border: 1.5px solid #00ffcc;
+  background: rgba(0,255,204,0.08);
+  color: #00ffcc;
+  border-radius: 12px;
+  font-weight: 600;
+  transition: all 0.2s;
+  box-shadow: 0 2px 16px 0 rgba(0,255,204,0.08);
+}
+.neon-btn:hover, .neon-btn:focus {
+  background: linear-gradient(90deg, #00ffcc 0%, #0080ff 100%);
+  color: #fff;
+  border-color: #00ffcc;
+  box-shadow: 0 0 24px 4px #00ffcc55, 0 2px 16px 0 rgba(0,255,204,0.12);
+  transform: scale(1.03);
+}
+.neon-btn-green {
+  border-color: #00ffcc;
+  color: #222;
+  background: linear-gradient(90deg, #00ffcc 0%, #00e6b2 100%);
+}
+.neon-btn-green:hover, .neon-btn-green:focus {
+  background: linear-gradient(90deg, #00e6b2 0%, #00ffcc 100%);
+  color: #fff;
+}
+.neon-btn-danger {
+  border-color: #ff6b6b;
+  color: #fff;
+  background: linear-gradient(90deg, #ff6b6b 0%, #ff8e8e 100%);
+}
+.neon-btn-danger:hover, .neon-btn-danger:focus {
+  background: linear-gradient(90deg, #ff8e8e 0%, #ff6b6b 100%);
+  color: #fff;
+  border-color: #ff6b6b;
 }

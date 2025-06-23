@@ -233,6 +233,9 @@ export default function EditBlogPostPage() {
       <div className="blog-create-content">
         <div className="blog-create-header">
           <h1 className="blog-create-title">Edit Post</h1>
+          <Link href="/community/drafts" className="blog-content-btn" style={{ marginLeft: 16 }}>
+            My Drafts
+          </Link>
           <p className="blog-create-subtitle">Update your trading insights for the community</p>
         </div>
         <form onSubmit={handleSubmit} className="blog-create-form">

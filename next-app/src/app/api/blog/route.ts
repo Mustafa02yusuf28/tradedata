@@ -5,12 +5,37 @@ import { MongoClient } from 'mongodb';
 
 export const dynamic = 'force-dynamic';
 
-export async function GET() {
-  const result = await getBlogPosts();
-  if (!result.posts) {
-    return NextResponse.json({ error: 'Failed to fetch blog posts.' }, { status: 500 });
+export async function GET(request: NextRequest) {
+  const url = new URL(request.url);
+  const drafts = url.searchParams.get('drafts') === 'true';
+
+  if (!drafts) {
+    const result = await getBlogPosts();
+    if (!result.posts) {
+      return NextResponse.json({ error: 'Failed to fetch blog posts.' }, { status: 500 });
+    }
+    return NextResponse.json({ posts: result.posts });
   }
-  return NextResponse.json({ posts: result.posts });
+
+  // Fetch drafts for the current user
+  const token = await getTokenFromCookies();
+  if (!token) {
+    return NextResponse.json({ error: 'Authentication required' }, { status: 401 });
+  }
+  const payload = await verifyToken(token);
+  if (!payload) {
+    return NextResponse.json({ error: 'Invalid token' }, { status: 401 });
+  }
+  const authorId = payload.email as string;
+  const client = await MongoClient.connect(process.env.MONGODB_URI!);
+  const db = client.db('blog');
+  const draftsList = await db
+    .collection('content')
+    .find({ isPublished: false, authorId })
+    .sort({ updatedAt: -1 })
+    .toArray();
+  await client.close();
+  return NextResponse.json({ posts: draftsList });
 }
 
 export async function POST(request: NextRequest) {
@@ -70,6 +95,9 @@ export async function POST(request: NextRequest) {
       keywords = keywordsRaw.split(',').map(k => k.trim()).filter(Boolean);
     }
 
+    // Optional isDraft flag
+    const isDraft = formData.get('isDraft') === 'true';
+
     // Parse content JSON string
     let content;
     try {
@@ -120,6 +148,7 @@ export async function POST(request: NextRequest) {
       thumbnail: thumbnailUrl,
       visibility,
       keywords,
+      isPublished: !isDraft, // If draft, not published
     };
 
     const result = await createBlogPost(blogData);
