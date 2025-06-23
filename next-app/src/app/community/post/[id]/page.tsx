@@ -79,7 +79,7 @@ const DEFAULT_TRENDING_KEYWORDS = [
 
 // Helper to convert newlines to <br> for paragraphs
 function formatParagraphContent(text: string) {
-  // Escape HTML to prevent XSS, then replace newlines with <br>
+  // Escape HTML to prevent XSS, then replace **text** with <strong>text</strong>, then replace newlines with <br>
   const escapeHtml = (unsafe: string) =>
     unsafe
       .replace(/&/g, "&amp;")
@@ -87,7 +87,10 @@ function formatParagraphContent(text: string) {
       .replace(/>/g, "&gt;")
       .replace(/\"/g, "&quot;")
       .replace(/'/g, "&#039;");
-  return escapeHtml(text).replace(/\n/g, '<br>');
+  let html = escapeHtml(text);
+  // Replace **text** with <strong>text</strong>
+  html = html.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+  return html.replace(/\n/g, '<br>');
 }
 
 export default function BlogPostPage() {
