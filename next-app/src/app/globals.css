@@ -3092,3 +3092,36 @@ select.blog-form-input option {
   color: #fff;
   border-color: #ff6b6b;
 }
+
+.show-pattern-mechanics{
+  margin-top: 1rem;
+ 
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.show-button{
+  background: linear-gradient(45deg, #00ffcc, #0080ff);
+  color: #000;
+  font-family: 'open sans', monospace;
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(0, 255, 204, 0.3);
+  text-decoration: none;
+  border-bottom: none;
+}
+.show-button:hover{
+  background: linear-gradient(90deg, #00ffcc 0%, #0080ff 100%);
+  color: #fff;
+  border-color: #00ffcc;
+  box-shadow: 0 0 24px 4px #00ffcc55, 0 2px 16px 0 rgba(0,255,204,0.12);
+  transform: scale(1.03);
+}
+
+.pattern-mechanics-margin {
+  margin-top: 1.5rem;
+}

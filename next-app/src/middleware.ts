@@ -4,11 +4,10 @@ import type { NextRequest } from 'next/server';
 export async function middleware(request: NextRequest) {
   const path = request.nextUrl.pathname;
 
-  // Only protect /community/create, /community/edit, not /community (view posts)
+  // Only protect /community/create, /community/edit, /news, /events (not /strategies)
   if (
     path.startsWith('/community/create') ||
     path.startsWith('/community/edit') ||
-    path.startsWith('/strategies') ||
     path.startsWith('/news') ||
     path.startsWith('/events')
   ) {
@@ -27,7 +26,7 @@ export async function middleware(request: NextRequest) {
 
 export const config = {
   matcher: [
-    '/strategies/:path*',
+    // '/strategies/:path*', // <-- removed so strategies are public
     '/news/:path*',
     '/events/:path*',
     '/community/create',
