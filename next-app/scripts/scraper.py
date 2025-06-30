@@ -137,6 +137,11 @@ class SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
         self.end_headers()
         self.wfile.write(b'Scraper is running.')
 
+    def do_HEAD(self):
+        self.send_response(200)
+        self.send_header('Content-type', 'text/html')
+        self.end_headers()
+
 def run_web_server():
     port = int(os.getenv('PORT', 10000))
     httpd = HTTPServer(('0.0.0.0', port), SimpleHTTPRequestHandler)
