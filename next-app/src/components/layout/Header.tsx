@@ -7,7 +7,6 @@ const navigation = [
   { name: 'Dashboard', path: '/dashboard' },
   { name: 'Strategies', path: '/strategies' },
   { name: 'News', path: '/news' },
-  { name: 'Events', path: '/events' },
   { name: 'Community', path: '/community' },
 ];
 

@@ -19,7 +19,6 @@ Disallow: /register
 Allow: /community/
 Allow: /news/
 Allow: /strategies/
-Allow: /events/
 Allow: /dashboard
 
 # Specific rules for different bots
